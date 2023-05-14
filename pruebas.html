@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        }
+
+        .pagination a {
+        color: #333;
+        font-size: 16px;
+        text-decoration: none;
+        margin: 0 10px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        }
+
+        .pagination a.active {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+        }
+
+        .pagination a:hover:not(.active) {
+        background-color: #f2f2f2;
+        }
+
+        .pagination .prev,
+        .pagination .next {
+        font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="pagination">
+        <a href="#" class="prev">&laquo; Anterior</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#" class="next">Siguiente &raquo;</a>
+      </div>
+</body>
+</html>

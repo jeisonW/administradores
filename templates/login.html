@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="principal">
+    <div class="tarjeta">
+        <div id="login">
+            <div class="titulo">
+                Bienvenido
+            </div>
+            <form id="loginform" action="/login" method="POST">
+                <input type="text" name="usuario" placeholder="Usuario" required>
+                <input type="password" placeholder="Contraseña" name="password" required>
+                <input type="password" placeholder="confirmar" name="confirmar" required>
+
+                <button type="submit" title="Ingresar" name="Ingresar" href="/login">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

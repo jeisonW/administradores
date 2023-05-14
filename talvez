@@ -1,0 +1,67 @@
+
+        {% if error_msg %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Waos </strong> {{ error_msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+         {% endif %}
+
+
+
+
+         layout
+
+         {% with messages=get_flashed_messages(with_categories=true) %}
+         {% for category, message in messages %}
+         <div class='alert alert-{{category}} text-center alert-dismissible fade show m-auto'>
+           {{ message }}
+         </div>
+         {% endfor %}
+     {% endwith %}
+
+
+     @app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        name = request.form.get("usuario")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Verificar que las contraseñas coincidan
+        #if password != confirmation:
+        #    error_msg = "Las contraseñas no coinciden. Por favor, inténtalo de nuevo."
+        #    return render_template("register.html", error_msg=error_msg)
+
+        #sql = "SELECT * FROM Cliente WHERE ESTADO = 'si'"  
+        #cursor.execute(sql)
+        #user_exists = cursor.fetchall()
+
+
+
+        #if len(user_exists) > 0 :
+        #    return render_template("register.html", error_msg="el usuario ya se encuentra en uso.")
+
+        #try:
+        #    query = text("INSERT INTO ser (name, password) VALUES (:name,:password) returning id")
+        #    result = db.execute(query, {"name":name, "password":generate_password_hash(password)})
+        #    user_id = result.fetchone()[0]
+        #    session["user_id"] = user_id
+        #    db.commit()
+            
+        #except:
+        #    print("Error al crear usuario")
+
+        return redirect("/")
+    
+    return render_template("register.html")
+
+
+
+ <select class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="Empleados" href="/">Empleados</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+                </select>
