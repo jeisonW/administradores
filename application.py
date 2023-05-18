@@ -20,7 +20,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 try:##verificar que no haya ningun error al conectarse con la BF
-    conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-F9CVAAQJ\SQLEXPRESS;DATABASE=copiatiendakd;UID=TiendaKD;PWD=1234')
+    #conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-F9CVAAQJ\SQLEXPRESS;DATABASE=copiatiendakd;UID=TiendaKD;PWD=1234')
+    #Conexion pa mi compu Harvin xd
+    conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-QUNO8C9;DATABASE=tiendakdcopia;Trusted_Connection=yes;')
 except:
     print("FAIL")
 
