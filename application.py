@@ -34,18 +34,20 @@ def login():
     if request.method == "POST":
         name = request.form.get("usuario")
         password = request.form.get("password")
-        confirmar = request.form.get("confirmar")
+        #confirmar = request.form.get("confirmar")
         #query = text("SELECT id, password FROM ser WHERE name = :name")
         #rows = db.execute(query, {"name": name}).fetchall()
         #if len(rows) < 1 or not check_password_hash(rows[0][1], password):
         #    return render_template("login.html" , error_msg="Nombre de usuario o contraseña incorrecta")
 
-        if name == admins[0] and password == admins[1] and confirmar == password:
+        if name == admins[0] and password == admins[1]: #and confirmar == password:
             session["user_id"] = 0
-        elif name == gerente[0] and password == gerente[1]  and confirmar == password:
+        elif name == gerente[0] and password == gerente[1]: #  and confirmar == password:
             session["user_id"] = 1
         else:
             print("usuario invalido")
+            return render_template("login.html",error="Credenciales incorrectas")
+            
         return redirect("/")
  
     else : 
