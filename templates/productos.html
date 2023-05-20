@@ -8,6 +8,20 @@
 <!--css propio-->
 <link rel="stylesheet" href="/static/css/productos.css">
 
+
+<div class="filtro">
+  <div class="dropdown">
+    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="multiselectDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      Selección Múltiple
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="multiselectDropdown">
+      <li><a class="dropdown-item" href="#">Opción 1</a></li>
+      <li><a class="dropdown-item" href="#">Opción 2</a></li>
+      <li><a class="dropdown-item" href="#">Opción 3</a></li>
+    </ul>
+  </div>
+</div>
+
 <div class="tarjetas-container">
 
   {% for row in prueba %}
@@ -27,7 +41,7 @@
       </div>
       <div class="card-stock">
         <p class="card-text"><strong>Stock:</strong> {{row.stock}} unidades</p>
-        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>   
+        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>   
       </div>
     </div>
   </div>

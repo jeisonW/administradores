@@ -124,22 +124,6 @@ body {
     color:#bbe1fa;
 }*/
 
-/*esto al parecer es de register*/
-
-.pie-form {
-    font-size: 100%;
-    text-align: center;    
-    margin-top: 20px;
-}
-
-.pie-form a {
-    color: #262626;
-}
-
-.pie-form a:hover {
-        color: #bbe1fa;
-}
-
 
 /* Size for brand */
 nav .navbar-brand
@@ -147,8 +131,3 @@ nav .navbar-brand
     font-size: xx-large;
 }
 
-main
-{
-    display: flex;
-    justify-content: center;
-}

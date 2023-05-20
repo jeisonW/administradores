@@ -78,3 +78,10 @@ div.card-stock {
     font-weight: bold;
   }
   
+
+/* div cel filtro */
+
+.filtro{
+  width: 100%;
+  margin: 5vh;
+}
