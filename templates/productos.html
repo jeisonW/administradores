@@ -7,58 +7,61 @@
 {% block main %}
 <!--css propio-->
 <link rel="stylesheet" href="/static/css/productos.css">
+<section class="p-4 my-container">
+  <button type="submit" class="btn my-4" id="menu-btn">
+      <i class="fas fa-bars"></i> Menu
+  </button>       
+  <div class="filtro">
+    <div class="dropdown">
+      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="multiselectDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Selección Múltiple
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="multiselectDropdown">
+        <li><a class="dropdown-item" href="#">Opción 1</a></li>
+        <li><a class="dropdown-item" href="#">Opción 2</a></li>
+        <li><a class="dropdown-item" href="#">Opción 3</a></li>
+      </ul>
+    </div>
 
-
-<div class="filtro">
-  <div class="dropdown">
-    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="multiselectDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      Selección Múltiple
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="multiselectDropdown">
-      <li><a class="dropdown-item" href="#">Opción 1</a></li>
-      <li><a class="dropdown-item" href="#">Opción 2</a></li>
-      <li><a class="dropdown-item" href="#">Opción 3</a></li>
-    </ul>
-  </div>
-
-  <div class="col">
-    <form action="/productos" method="post"></form>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar" name="buscar">
-        <button class="btn btn-primary" type="button" >Buscar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="tarjetas-container">
-
-  {% for row in prueba %}
-
-  <div class="card" style="width: 18rem;">
-    {% if row.imagen == 'None' %}
-      <img src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg" alt="Imagen del último producto" style="height:50%">
-    {% else %}
-      <img src="data:image/png;base64,{{ row.imagen}}" alt="Imagen del último producto">
-    {% endif %}
-    <div class="card-body">
-      <h5 class="card-title">{{ row.nombre }} </h5>
-        <p class="card-text codigo-color"><span><strong>Código:</strong> {{ row.id }}</span><span><strong>Color:</strong> {{row.color}}</span></p>
-      <div class="card-text precio">
-          <p><strong>Talla:</strong> {{row.talla}}</p>
-          <p><strong>Precio:</strong> {{row.precio}}</p>
-      </div>
-      <div class="card-stock">
-        <p class="card-text"><strong>Stock:</strong> {{row.stock}} unidades</p>
-        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>   
-      </div>
+    <div class="col">
+      <form action="/productos" method="post"></form>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar" name="buscar">
+          <button class="btn btn-primary" type="button" >Buscar</button>
+        </div>
+      </form>
     </div>
   </div>
-  {% endfor %}
-</div>
 
-<div class="paginatio">
-  {{ pagination.links }}
-</div>
+  <div class="tarjetas-container">
+
+    {% for row in prueba %}
+
+    <div class="card" style="width: 18rem;">
+      {% if row.imagen == 'None' %}
+        <img src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg" alt="Imagen del último producto" style="height:50%">
+      {% else %}
+        <img src="data:image/png;base64,{{ row.imagen}}" alt="Imagen del último producto">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ row.nombre }} </h5>
+          <p class="card-text codigo-color"><span><strong>Código:</strong> {{ row.id }}</span><span><strong>Color:</strong> {{row.color}}</span></p>
+        <div class="card-text precio">
+            <p><strong>Talla:</strong> {{row.talla}}</p>
+            <p><strong>Precio:</strong> {{row.precio}}</p>
+        </div>
+        <div class="card-stock">
+          <p class="card-text"><strong>Stock:</strong> {{row.stock}} unidades</p>
+          <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>   
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="paginatio">
+    {{ pagination.links }}
+  </div>
+</section>
 
 {% endblock %}
