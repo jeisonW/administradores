@@ -66,7 +66,7 @@
     <nav class="navbar navbar-expand d-flex flex-column align-item-start" id="sidebar">
         {% if session["user_id"][0][1] == 'admin' %}
                 <a href="#" class="navbar-brand text-light mt-5">
-                    <div class="display-5 font-weight-bold">Tiendas KD</div>
+                    <div class="display-5 font-weight-bold"> {{session["user_id"][0][1]}} </div>
                 </a>
                 <ul class="navbar-nav d-flex flex-column mt-5 w-100">
                     <li class="nav-item w-100 text-center align-items-center">
@@ -86,7 +86,26 @@
                     </button> </a>            
                 </ul>
         {% endif %}
+
+        {% if session["user_id"][0][1] == 'empleado1' %}
+        <a href="#" class="navbar-brand text-light mt-5">
+            <div class="display-5 font-weight-bold"> {{session["user_id"][0][1]}} </div>
+        </a>
+        <ul class="navbar-nav d-flex flex-column mt-5 w-100">
+            <li class="nav-item w-100 text-center align-items-center">
+                <a href="/productos" class="nav-link text-light pl-4">Productos</a>
+            </li>
+            <li class="nav-item w-100 text-center align-items-center">
+                <a href="#" class="nav-link text-light pl-4">Desperfectos</a>
+            </li>
+            <a href="/logout"> <button type="submit" class="btn my-4" id="cerrar-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesion
+            </button> </a>            
+        </ul>
+{% endif %}
     </nav>
+  
+         
   
    
     {% block main %}{% endblock %}

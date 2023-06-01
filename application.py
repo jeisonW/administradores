@@ -152,7 +152,7 @@ def logout():
 @app.route("/" , methods=["GET", "POST"])
 @login_required
 def index():
-    return render_template("layout.html" )
+    return render_template("futuro.html" )
 
 
 
