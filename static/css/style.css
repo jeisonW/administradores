@@ -64,68 +64,6 @@ body {
     border-color: #f984bc;
 }
 
-/*
-.principal {
-    display: flex;
-    /*align-items: center;
-    justify-content: center;
-    /*margin-top: 50px;
-  
-}
-
-.tarjeta {
-    max-width: 500px;
-    width: 100%;
-}
-
-.titulo {
-    font-size: 250%;
-    color:#19191a;
-    text-align: center;
-}
-
-#login {
-    width: 100%;
-    padding: 50px 30px;
-    background-color: #c0577f;
-    border-radius: 10px;  
-}
-
-#login input {
-    font-family: 'Overpass', sans-serif;
-    font-size: 110%;
-    color: #1b262c;
-    width: 100%;
-    height: 40px;  
-    margin-bottom: 10px;    
-    box-sizing: border-box;
-    
-}
-
-#login input::placeholder {
-    font-family: 'Overpass', sans-serif;
-    color: #0c0c0c;
-}
-
-#login button {
-    color:#1b262c;
-    width: 100%;
-    height: 40px;
-    border: none;
-    
-    border-radius: 3px 3px 3px 3px;
-    
-    background-color: #BFBFBF;
-    
-}
-
-#login button:hover {
-    background-color: #0f4c75;
-    color:#bbe1fa;
-}*/
-
-
-/* Size for brand */
 nav .navbar-brand
 {
     font-size: xx-large;

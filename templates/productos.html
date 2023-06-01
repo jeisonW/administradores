@@ -7,6 +7,11 @@
 {% block main %}
 <!--css propio-->
 <link rel="stylesheet" href="/static/css/productos.css">
+<section class="p-4 my-container">
+
+  <button type="submit" class="btn my-4" id="menu-btn">
+      <i class="fas fa-bars"></i> Menu
+  </button>       
 
 
 <div class="filtro">
@@ -54,11 +59,14 @@
       </div>
     </div>
   </div>
-  {% endfor %}
-</div>
+  {%endfor%}
 
-<div class="paginatio">
-  {{ pagination.links }}
-</div>
+
+
+  <div class="paginatio">
+    {{ pagination.links }}
+  </div>
+
+</section>
 
 {% endblock %}

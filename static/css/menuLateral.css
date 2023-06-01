@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.navbar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    margin-left: -300px;
+    background-color: #b02960;
+    transition: 0.4s;
+}
+
+.nav-link {
+    font-size: 1.25em;
+}
+
+.nav-link:active,
+.nav-link:focus,
+.nav-link:hover {
+    background-color: #ffffff26;
+}
+
+
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: #ffffff26;
+}
+
+.my-container {
+    transition: 0.4s;
+}
+
+#cerrar-btn{
+    background-color: #b02960;
+    color: #fff;
+}
+
+.nav-item{
+    margin-top: 5vh;
+    align-items: center;
+}
+/* para el navbar */
+
+.active-nav {
+    margin-left: 0;
+}
+
+
+/* seccion centro */
+
+.active-cont {
+    margin-left: 250px;
+}
+
+#menu-btn {
+    background-color: #b02960;
+    color: #fff;
+}
+
+#menu-btn:focus {
+    box-shadow: 0 0 0 0.25rem #7952b344;
+}

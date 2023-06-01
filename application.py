@@ -22,7 +22,7 @@ Session(app)
 try:##verificar que no haya ningun error al conectarse con la BF
     conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-F9CVAAQJ\SQLEXPRESS;DATABASE=copiatiendakd;UID=TiendaKD;PWD=1234')
     #Conexion pa mi compu Harvin xd
-    #conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-QUNO8C9;DATABASE=tiendakdcopia;Trusted_Connection=yes;')
+    # conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-QUNO8C9;DATABASE=copiatienda01-06;Trusted_Connection=yes;')
 except:
     print("FAIL")
 
@@ -72,7 +72,6 @@ def prueba():
         sql = "SELECT * FROM Producto WHERE Estado = 'si' " # recomiendo poner order by Stock desc
         cursor.execute(sql)
         resultados = cursor.fetchall()
-        print(search)
     else:
 
         cadena_sin_espacios = search.replace(' ', '')
@@ -82,8 +81,8 @@ def prueba():
             resultados =cursor.execute(sql, ("%" + search +"%" ))
             resultados = cursor.fetchall()
         else:
-            sql = "select *  from Producto where ESTADO = 'si' and NombreProducto like ? or CodigoProducto = ? "
-            resultados =cursor.execute(sql, ("%" + search +"%"  , str(search)))
+            sql = "select *  from Producto where ESTADO = 'si' and  CodigoProducto = ? "
+            resultados =cursor.execute(sql, (search))
             resultados = cursor.fetchall()
 
 
