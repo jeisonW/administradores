@@ -32,25 +32,34 @@ cursor = conexion.cursor()
 def login():
     session.clear()
     if request.method == "POST":
-        name = request.form.get("usuario")
+        nombre = request.form.get("usuario")
         password = request.form.get("password")
-        #confirmar = request.form.get("confirmar")
-        #query = text("SELECT id, password FROM ser WHERE name = :name")
-        #rows = db.execute(query, {"name": name}).fetchall()
-        #if len(rows) < 1 or not check_password_hash(rows[0][1], password):
-        #    return render_template("login.html" , error_msg="Nombre de usuario o contraseña incorrecta")
 
-        if name == admins[0] and password == admins[1]: #and confirmar == password:
-            session["user_id"] = 0
-        elif name == gerente[0] and password == gerente[1]: #  and confirmar == password:
-            session["user_id"] = 1
+        query = "select * from Usuarios where nombre = ?"
+        rows =cursor.execute(query, (nombre))
+        rows = cursor.fetchall()
+
+        if len(rows) == 0 or not (rows[0][2] == password):
+            print("prueba")
+            return render_template("login.html" , error="Nombre de usuario o contraseña incorrecta")
+
+            #if query and password: #and confirmar == password:
+        
         else:
-            print("usuario invalido")
-            return render_template("login.html",error="Credenciales incorrectas")
+        
+            session["user_id"] = rows
+            print(session["user_id"][0][1])
+            return redirect("/")    
+
+
+        #elif nombre == gerente[0] and password == gerente[1]: #  and confirmar == password:
+            #session["user_id"] = 1
+        #else:
+        #    print("usuario invalido")
+        #    return render_template("login.html",error="Credenciales incorrectas")
             
-        return redirect("/")
- 
     else : 
+        print("aa")
         return render_template("login.html")
 
 
