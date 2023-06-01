@@ -59,16 +59,33 @@ def login():
         #    return render_template("login.html",error="Credenciales incorrectas")
             
     else : 
-        print("aa")
         return render_template("login.html")
 
 
 @app.route("/productos" , methods=["GET", "POST"])
 @login_required
 def prueba():
-    sql = "SELECT * FROM Producto WHERE Estado = 'si' " # recomiendo poner order by Stock desc
-    cursor.execute(sql)
-    resultados = cursor.fetchall()
+
+    search = request.args.get("buscar")
+
+    if search is None:
+        sql = "SELECT * FROM Producto WHERE Estado = 'si' " # recomiendo poner order by Stock desc
+        cursor.execute(sql)
+        resultados = cursor.fetchall()
+        print(search)
+    else:
+
+        cadena_sin_espacios = search.replace(' ', '')
+
+        if cadena_sin_espacios.isalpha():
+            sql = "select *  from Producto where ESTADO = 'si' and NombreProducto like ? "
+            resultados =cursor.execute(sql, ("%" + search +"%" ))
+            resultados = cursor.fetchall()
+        else:
+            sql = "select *  from Producto where ESTADO = 'si' and NombreProducto like ? or CodigoProducto = ? "
+            resultados =cursor.execute(sql, ("%" + search +"%"  , str(search)))
+            resultados = cursor.fetchall()
+
 
     # Paginar los resultados
     page = request.args.get(get_page_parameter(), type=int, default=1)
