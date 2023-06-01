@@ -65,7 +65,6 @@
     
     <nav class="navbar navbar-expand d-flex flex-column align-item-start" id="sidebar">
         {% if session["user_id"][0][1] == 'admin' %}
-            <form action="/empleado" method="get">
                 <a href="#" class="navbar-brand text-light mt-5">
                     <div class="display-5 font-weight-bold">Tiendas KD</div>
                 </a>
@@ -74,22 +73,21 @@
                         <a href="/productos" class="nav-link text-light pl-4">Productos</a>
                     </li>
                     <li class="nav-item w-100 text-center align-items-center">
-                        <a href="#" class="nav-link text-light pl-4">Proveedores</a>
+                        <a href="/empleado?opcion=Proveedor"" class="nav-link text-light pl-4">Proveedores</a>
                     </li>
                     <li class="nav-item w-100 text-center align-items-center">
                         <a href="#" class="nav-link text-light pl-4">Desperfectos</a>
                     </li>
                     <li class="nav-item text-center align-items-center">
-                        <a href="#" class="nav-link text-light pl-4">Empleados</a>
+                        <a href="/empleado?opcion=Empleado" class="nav-link text-light pl-4">Empleados</a>
                     </li>
-                    <button type="submit" class="btn my-4" id="cerrar-btn">
-                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesion
-                    </button>            
+                    <a href="/logout"> <button type="submit" class="btn my-4" id="cerrar-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesion
+                    </button> </a>            
                 </ul>
-            </form>
         {% endif %}
     </nav>
-
+  
    
     {% block main %}{% endblock %}
     <!--iconos propio-->
