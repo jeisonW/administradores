@@ -13,33 +13,33 @@
       <i class="fas fa-bars"></i> Menu
   </button>       
 
+  <div class="filtro">
+    <div class="dropdown">
+      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="multiselectDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Selección Múltiple
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="multiselectDropdown">
+        <li><a class="dropdown-item" href="#">Opción 1</a></li>
+        <li><a class="dropdown-item" href="#">Opción 2</a></li>
+        <li><a class="dropdown-item" href="#">Opción 3</a></li>
+      </ul>
+    </div>
 
-<div class="filtro">
-  <div class="dropdown">
-    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="multiselectDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      Selección Múltiple
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="multiselectDropdown">
-      <li><a class="dropdown-item" href="#">Opción 1</a></li>
-      <li><a class="dropdown-item" href="#">Opción 2</a></li>
-      <li><a class="dropdown-item" href="#">Opción 3</a></li>
-    </ul>
+    <div class="col">
+      <form action="/productos" method="get">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar" name="buscar">
+          <button class="btn btn-primary" type="button" >Buscar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <div class="col">
-    <form action="/productos" method="get">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar" name="buscar">
-        <button class="btn btn-primary" type="button" >Buscar</button>
-      </div>
-    </form>
-  </div>
-</div>
+  <div class="tarjetas-container">
 
-<div class="tarjetas-container">
+    {% for row in prueba %}
 
-  {% for row in prueba %}
-
+    
   <div class="card" style="width: 18rem;">
     {% if row.imagen == 'None' %}
       <img src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg" alt="Imagen del último producto" style="height:50%">
@@ -57,17 +57,23 @@
         <p class="card-text"><strong>Stock:</strong> {{row.stock}} unidades</p>
         <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>   
       </div>
-      
     </div>
   </div>
   {%endfor%}
 
 
 
-  <div class="paginatio">
-    {{ pagination.links }}
-  </div>
+    <div class="paginatio">
+      {{ pagination.links }}
+    </div>
 
 </section>
+  <!--js propio-->
+  <script src="/static/js/navbar.js"></script>
+  <!--iconos font awesome-->
+  <script src="https://kit.fontawesome.com/72d2ae7f6d.js" crossorigin="anonymous"></script>
+  <!--js bootstraps-->
+  <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+
 
 {% endblock %}

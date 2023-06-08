@@ -154,6 +154,7 @@ def logout():
 @login_required
 def index():
     return render_template("futuro.html" )
+
 #toda esta ruta es nueva 
 @app.route("/edituser" , methods=["GET", "POST"])
 def edit():
