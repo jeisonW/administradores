@@ -20,9 +20,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 try:##verificar que no haya ningun error al conectarse con la BF
-    #conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-F9CVAAQJ\SQLEXPRESS;DATABASE=copiatiendakd;UID=TiendaKD;PWD=1234')
+    conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-F9CVAAQJ\SQLEXPRESS;DATABASE=copiatiendakd;UID=TiendaKD;PWD=1234')
     #Conexion pa mi compu Harvin xd
-    conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-QUNO8C9;DATABASE=copiatienda01-06;Trusted_Connection=yes;')
+    #conexion =  pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-QUNO8C9;DATABASE=copiatienda01-06;Trusted_Connection=yes;')
 except:
     print("FAIL")
 
@@ -67,8 +67,9 @@ def login():
 def prueba():
 
     search = request.args.get("buscar")
-
-    if search is None:
+    print(search)
+    if search is None or search is '':
+        print("mensaje")
         sql = "SELECT * FROM Producto WHERE Estado = 'si' " # recomiendo poner order by Stock desc
         cursor.execute(sql)
         resultados = cursor.fetchall()
@@ -153,8 +154,16 @@ def logout():
 @login_required
 def index():
     return render_template("futuro.html" )
-
-
+#toda esta ruta es nueva 
+@app.route("/edituser" , methods=["GET", "POST"])
+def edit():
+    if request.method == "POST":
+        name = 0
+    else:
+        sql = "select * from Usuarios"
+        cursor.execute(sql)
+        registro = cursor.fetchall()
+        return render_template("edituser.html" , registro = registro)
 
 if __name__ == '__main__':
     app.run()
