@@ -1,4 +1,4 @@
-window.addEventListener('load', function() {
+  window.addEventListener('load', function() {
     var menu_btn = document.querySelector("#menu-btn");
     var sidebar = document.querySelector("#sidebar");
     var container = document.querySelector(".my-container");
@@ -15,4 +15,16 @@ window.addEventListener('load', function() {
       container.classList.add("active-cont");
     }
   });
+
+  /*colorea si se le dio click*/
+  window.addEventListener('DOMContentLoaded', function() {
+    var currentLocation = window.location.href;
   
+    var navLinks = document.querySelectorAll(".nav-link");
+  
+    navLinks.forEach(function(navLink) {
+      if (navLink.href === currentLocation) {
+        navLink.classList.add("active");
+      }
+    });
+  });

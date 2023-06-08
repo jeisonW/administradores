@@ -18,6 +18,11 @@ body {
     transition: 0.4s;
 }
 
+/*colorea si se le dio click*/
+.nav-link.active {
+    background-color: #ffffff26;
+}
+
 .nav-link {
     font-size: 1.25em;
 }

@@ -6,32 +6,44 @@
 
 {% block main %}
 
-<table class="table table-dark table-striped">
-<thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Dirreccion</th>
-        <th scope="col"></th>
+<section class="p-4 my-container">
 
-    </tr>
-    </thead>
-    <tbody>
-    {% for row in datos %}
-    <tr>
-        <td>{{row.IDproveedor }}</td>
-        <td>{{row.Nombreproveedor}}</td>
-        <td>{{row.Correo}}</td>
-        <td>{{row.Telefono}}</td>
-        <td>{{row.Dirreccion}}</td>
-        <td>  <a href="" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-            <a class="btn btn-danger btn-sm eliminar-producto"><i class="fa fa-trash"></i></a></td>
-    </tr>
-    {% endfor %}
-</table>
+    <button type="submit" class="btn my-4" id="menu-btn">
+        <i class="fas fa-bars"></i> Menu
+    </button>       
+    
+    <table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Dirreccion</th>
+            <th scope="col"></th>
 
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in datos %}
+        <tr>
+            <td>{{row.IDproveedor }}</td>
+            <td>{{row.Nombreproveedor}}</td>
+            <td>{{row.Correo}}</td>
+            <td>{{row.Telefono}}</td>
+            <td>{{row.Dirreccion}}</td>
+            <td>  <a href="" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                <a class="btn btn-danger btn-sm eliminar-producto"><i class="fa fa-trash"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
 
+</section>
+  <!--js propio-->
+  <script src="/static/js/navbar.js"></script>
+  <!--iconos font awesome-->
+  <script src="https://kit.fontawesome.com/72d2ae7f6d.js" crossorigin="anonymous"></script>
+  <!--js bootstraps-->
+  <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
 
 {% endblock %}
