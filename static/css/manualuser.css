@@ -1,0 +1,137 @@
+
+.tituloManual{
+    font-family: 'Russo One', sans-serif;
+    text-align: center;
+    font-size: 35px;
+}
+.nav-link1 {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+}
+.descripManual{
+    margin-left: 5vh;
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px;
+}
+
+.nav-link1:hover {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menuManualList{
+    margin-top: 4vh;
+    margin-left: 5vh;
+}
+/*Css de los detalles de productos*/
+#productosManDiv{
+    margin-left: 5vh;
+}
+#txtProduc{
+    margin-top: 4vh;
+}
+#productosManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#productosManDiv p{
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+}
+#productosManDivimg {
+    margin-left: 10vh;
+    width: 70vh; 
+}
+
+.atras{
+    margin-left: 2vh;
+    color: #f3146b;
+    font-size: 50px;
+}
+.atras:hover{
+    color: #f193a9;
+    transition: color 0.3s ease
+}
+/*css de los detalles de graficos*/
+#graficosManDiv{
+    margin-left: 5vh;
+}
+
+#graficosManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#graficosManDiv p{
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+}
+#graficosManDiv img {
+    margin-left: 5vh;
+    width: 70vh; 
+}
+
+/*css de los detalles de empleados*/
+#empleadosManDiv img{
+    width: 70vh; 
+    margin-left: 3vh;
+}
+#empleadosManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#empleadosManDiv p{
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+}
+/*CSS de los detalles de abastecimientos */
+#abastaceManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#abastaceManDiv p{
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+}
+#abastaceManDiv img{
+    width: 90vh; 
+    margin-left: 3vh;
+}
+
+/*CSS de los detalles de ventas*/
+
+#ventasManDiv{
+    margin-left: 5vh;
+}
+#ventasManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#ventasManDiv p{
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+}
+#ventasManDiv img{
+    margin-left: 10vh;
+    width: 70vh; 
+}
+
+/*CSS de los detalles de desperfectos*/
+#desperfeManDiv img{
+    width: 80vh; 
+    margin-left: 3vh;
+}
+#desperfeManDiv h2{
+    margin-top: 5vh;
+    color: black;
+    font-family: 'Russo One', sans-serif;
+}
+#desperfeManDiv p{
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+}

@@ -1,0 +1,596 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+
+
+{% block main %}
+<link rel="stylesheet" href="static/css/awesomplete.css" /> 
+
+<style>
+  /* Agregar desplazamiento vertical */
+  #contenedorTarjetas {
+      max-height: 300px; /* Establece la altura máxima */
+      overflow-y: auto; /* Agregar desplazamiento vertical */
+  }
+</style>
+
+  
+  <link rel="stylesheet" href="static/css/button.css">
+  
+  
+  <section class="p-4 my-container">
+    
+    <div class="navbar1">
+        <div class="left-content">
+            <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+        </div>
+        <a href="/logout"> 
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>  
+        {% if session["user_id"][0][1] == 'admin' %}
+  
+        <a href="/edituser"> Usuarios </a>
+        {% endif %}
+  
+      </div>  
+       
+    <link rel="stylesheet" href="/static/css/productosnuevos.css"> 
+
+    <div class="form-container" style="color: black;">
+      <form  class="needs-validation" novalidate id="form_validation">
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alerta1">
+          <strong>{{ error }} </strong> 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        {% endif %}
+      
+        {% if succes %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alerta1">
+          <strong>  {{ succes }} </strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+          
+        <h2 class="form-title">Registrar Productos</h2>
+
+
+          <div class="row">
+            <div class="col-12 text-center justify-content-center" id="divproveedor">
+              <label class="form-label" for="nombre">Seleciona Proveedor *
+
+                  <button class="btn btn-secondary btn-sm dropdown-toggle " type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false" id="editar" >
+                    Proveedor Disponibles
+                  </button>
+                  <ul class="dropdown-menu dos" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;" >
+                    <li>
+                          <input type="text" id="searchInput" onkeyup="filter()" placeholder="Buscar..." >
+                    </li>
+                    {% for row in proveedor %}
+                    <li  >
+                      <h5 class="nombrepro" onclick="selectProveedor('{{row.IDproveedor}}' , '{{row.Nombreproveedor}}')">{{row.Nombreproveedor}}</h5>
+                    </li>
+                    {% endfor %}
+                  </ul>
+
+                  <input type="hidden" class="form-control" name="codigoproveedor" id="codigoproveedor" required  >
+                </label>
+            </div>
+           
+           </div>
+
+          <div class="row">
+              <div class="col-4">
+                <label class="form-label"for="validationCustom01" >Ingresa Codigo del producto 
+                  <input class="form-control" type="text"  name="id_product"  id="id_product"required title="Este campo es obligatorio" />
+                  <div id="resultado"></div>
+
+                </label>
+                  
+              </div> 
+
+              <div class="col-4">
+
+                <label class="form-label" for="nombre">Nombre del Producto *:
+                  <input class="form-control" type="text" id="name_producto" name="nombre"  required   >
+                  
+                </label>
+                
+              </div>
+
+              <div class="col-4">
+                <label class="form-label" for="color">Talla *:
+                  <input type="number" name="talla" id="talla_producto" placeholder="" required class="form-control"  min="20" max="44" >
+                  
+                </label>
+              </div>
+             
+          </div>
+      
+          <div class="w-100"></div>
+          <div class="row">
+      
+            <div class="col-4">   
+                <label class="form-label" for="nombre">Categoria *:
+                <input type="text" name="categoria" class="form-control" id="categoria_producto" required  pattern="[a-zA-Z\s]+" title="No se aceptan datos numericos" >
+                </label>
+            </div>
+      
+            <div class="col-4">
+              <label class="form-label" for="talla">marca *:
+                <input class="form-control" type="text" name="marca" id="marca_producto" placeholder="" required>        
+                
+              </label>
+            </div>
+
+            <div class="col-4">
+                <label class="form-label" >Color *:</label>
+                <input  class="form-control" type="text" id="color_producto" name="color"  required  pattern="[a-zA-Z\s]+" title="No se aceptan datos numericos" >
+            </div>   
+      
+            <div class="w-100"></div>
+      
+            <div class="col-4">
+              <label class="form-label" for="color"> Precio de compra *:
+                <input type="number" name="precioc" id="preciocompra" class="form-control"  min="1"  required>
+              </label>
+            </div>
+      
+            <div class="col-4">
+              <label class="form-label" for="color">Precio de venta  *:
+                <input type="number" name="preciov"  id=precioventa class="form-control"  min="1" required>
+              </label>
+            </div>
+
+            <div class="col-4">
+              <label class="form-label" for="color"> Cantidad *:
+                <input type="number" name="cantidad"  id="cantidad_producto" class="form-control" min="1" required>
+              </label>
+            </div>
+
+
+            <div class="w-100"></div>
+
+            <div class="col-4">
+            </div>
+              <div class="col-4">
+                <label class="form-label" for="color">Fecha de registro *:
+                  <input type="date" class="form-control" name="fecha"   min="2023-01-01" id="fecha_producto" onblur="fecha2()" required>
+                  <p id="message_fecha" style="color: red;"> </p>
+                </label> 
+              </div>
+
+            </div>
+
+            <button class="form-submit" id="agregarTarjeta" type="submit">Agregar detalle</button>
+          </form> 
+        </div>
+
+          
+          
+        <br>
+
+        <div class="container">
+          <div class="row " >
+              <div class="col-md d" >
+                  <div id="contenedorTarjetas"  class="row"></div>
+                  <span id="total">  </span>
+              </div>
+              <button id="enviarDatos" hidden="true">Guardar Transaccion </button>
+              
+          </div>
+        </div>
+
+
+</section>
+<script>
+
+var listaDeProductos = []; // Arreglo para almacenar productos
+let tarjetaIndex = 0; // Índice de tarjetas
+let counttarjet = 0 ;
+
+function total(){
+    var total = 0; // Inicializa el total en 0
+
+    document.getElementById("total").innerHTML = '';
+
+          for (const product of listaDeProductos) {
+            const precioCompra = parseFloat(product.preciocompra);
+            const cantidad = parseFloat(product.cantidad_producto);
+            
+            // Asegúrate de que las conversiones sean válidas antes de sumar al total
+            if (!isNaN(precioCompra) && !isNaN(cantidad)) {
+                total += precioCompra * cantidad;
+            }
+            else
+            {
+              total = 0;
+              document.getElementById("total").innerHTML = `Total: ${total}`;
+            }
+              
+            document.getElementById("total").innerHTML = `Total: ${total}`;
+          }          
+  }
+  
+
+
+
+function selectProveedor(IDproveedor , nombre) {
+    
+    document.getElementById("drop").innerHTML = nombre;
+    document.getElementById('codigoproveedor').value = IDproveedor;
+};
+
+const formulario = document.getElementById("form_validation");
+
+formulario.addEventListener("submit", function(event) {
+  event.preventDefault();
+});
+
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+
+    document.getElementById("enviarDatos").addEventListener("click", function() {
+        enviarDatosAlServidor();
+    });
+  
+  
+      const botonAgregar = document.getElementById("agregarTarjeta");
+
+
+      const contenedorTarjetas = document.getElementById("contenedorTarjetas");
+      botonAgregar.addEventListener("click", function() 
+      {
+
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+
+            }
+
+            form.classList.add('was-validated')
+        })
+
+        var codigoproveedor = document.getElementById("codigoproveedor").value;
+
+        var producto = {
+          id_product: document.getElementById("id_product").value,
+          name_producto: document.getElementById("name_producto").value,
+          talla_producto: document.getElementById("talla_producto").value,
+          categoria_producto: document.getElementById("categoria_producto").value,
+          marca_producto: document.getElementById("marca_producto").value,
+          color_producto: document.getElementById("color_producto").value,
+          preciocompra: document.getElementById("preciocompra").value,
+          precioventa: document.getElementById("precioventa").value,
+          cantidad_producto: document.getElementById("cantidad_producto").value,
+          fecha_producto: document.getElementById("fecha_producto").value,
+          codigoproveedor: document.getElementById("codigoproveedor").value
+        };
+
+        
+        if (!codigoproveedor){
+          alert("Selecciona un proveedor");
+        }
+        else if(producto.preciocompra > producto.precioventa){
+          Swal.fire({
+              icon: "error",
+              text: "verifica tus precios!",
+          });
+          
+        }
+        else {
+
+          if (producto.id_product && producto.name_producto && producto.talla_producto && producto.categoria_producto
+             && producto.marca_producto && producto.color_producto && producto.preciocompra 
+             && producto.precioventa && producto.cantidad_producto && producto.fecha_producto && producto.codigoproveedor)
+          {
+
+
+          const nuevaTarjetaHTML = `
+              <div class="col-md-12 mb-3" data-index="${tarjetaIndex}">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <h6 class="card-subtitle text-muted">Código de Producto</h6>
+                                  <p class="card-text">${producto.id_product}</p>
+                                  <h6 class="card-subtitle text-muted">Nombre de Producto</h6>
+                                  <p class="card-text">${producto.name_producto}"</p>
+                                  <h6 class="card-subtitle text-muted">Foto</h6>
+                              </div>
+                              <div class="col-md-3">
+                                  <h6 class="card-subtitle text-muted">Precio de Compra</h6>
+                                  <p class="card-text">${producto.preciocompra}</p>
+                                  <h6 class="card-subtitle text-muted">Precio de Venta</h6>
+                                  <p class="card-text">${producto.precioventa}</p>
+                                  <h6 class="card-subtitle text-muted">Cantidad</h6>
+                                  <p class="card-text">${producto.cantidad_producto}</p>
+                              </div>
+                              <div class="col-md-3">
+                                  <h6 class="card-subtitle text-muted">Color de Producto</h6>
+                                  <p class="card-text">${producto.color_producto}</p>
+                                  <h6 class="card-subtitle text-muted">Marca</h6>
+                                  <p class="card-text">${producto.marca_producto}</p>
+                                  <h6 class="card-subtitle text-muted">Categoría</h6>
+                                  <p class="card-text">${producto.categoria_producto}</p>
+                              </div>
+                              <div class="col-md-3">
+                                  <h6 class="card-subtitle text-muted">Talla</h6>
+                                  <p class="card-text">${producto.talla_producto}</p>
+                                  <h6 class="card-subtitle text-muted">Fecha</h6>
+                                  <p class="card-text">${producto.fecha_producto}</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card-footer">
+                          <button class="btn btn-danger" onclick="eliminarTarjeta(this)">Eliminar</button>
+                      </div>
+                  </div>
+              </div>
+          `;
+          listaDeProductos.push(producto);
+          const nuevaTarjeta = document.createElement("div");
+          nuevaTarjeta.innerHTML = nuevaTarjetaHTML;
+          contenedorTarjetas.appendChild(nuevaTarjeta);
+          document.getElementById("drop").disabled = true;
+          document.getElementById("fecha_producto").disabled = true;
+  
+          document.getElementById("enviarDatos").hidden = false;
+
+          limpiarinput();
+          tarjetaIndex++; // Incrementa el índice de tarjetas
+          counttarjet++;
+
+
+          //Ajusta el contador de índices de tarjeta y el total
+
+          const tarjetasRestantes = document.querySelectorAll(".col-md-12 ");
+            tarjetasRestantes.forEach((tarjeta, i) => {
+               tarjeta.setAttribute("data-index", i);
+            });
+
+            tarjetaIndex = tarjetasRestantes.length;
+
+          console.log(listaDeProductos);
+
+          total()
+
+
+        }
+        }
+
+      });
+          
+  });
+
+  //Esta funcion es para activar el input fecha y el de select proveedores, si no hay tarjetas se activa
+  function childcount(){
+    if (counttarjet == 0)
+    {
+      document.getElementById("drop").disabled = false;
+      document.getElementById("fecha_producto").disabled = false;
+      limpiarinput(); // Limpia los campos de entrada cuando no hay tarjetas
+      document.getElementById("fecha_producto").value = '';
+      document.getElementById("enviarDatos").hidden = true;
+
+      total();
+
+     
+    }
+  }
+
+  function limpiarinput(){
+    document.getElementById("id_product").value = '';
+    document.getElementById("name_producto").value = '';
+    document.getElementById("talla_producto").value = '';
+    document.getElementById("categoria_producto").value = '';
+    document.getElementById("marca_producto").value = '';
+    document.getElementById("color_producto").value = '';
+    document.getElementById("preciocompra").value = '';
+    document.getElementById("precioventa").value = '';
+    document.getElementById("cantidad_producto").value = '';
+  }
+
+  // Función para eliminar la tarjeta
+  function eliminarTarjeta(botonEliminar) {
+    const tarjeta = botonEliminar.closest(".col-md-12");
+    tarjeta.remove();
+
+   
+    const tarjetasRestantes = document.querySelectorAll(".col-md-12");
+    tarjetasRestantes.forEach((tarjeta, i) => {
+       tarjeta.setAttribute("data-index", i);
+    });
+
+    // Ajusta el contador de índices de tarjeta y el total
+    tarjetaIndex = tarjetasRestantes.length;
+    
+    const index = tarjeta.getAttribute("data-index"); 
+    listaDeProductos.splice(index,  1);//elimino del diccionario en base al data-index
+
+    counttarjet--;
+
+
+    //const tarjetasRestantes = document.querySelectorAll(".col-md-12");
+    //tarjetasRestantes.forEach((tarjeta, i) => {
+    //   tarjeta.setAttribute("data-index", i);
+    //});
+
+    // Ajusta el contador de índices de tarjeta y el total
+    //tarjetaIndex = tarjetasRestantes.length;
+  
+    childcount();
+
+    total()
+  }
+
+
+  
+  function fecha2(){
+  var fecha_producto = document.getElementById("fecha_producto").value;
+
+  if (fecha_producto )
+  {
+
+  var partes = fecha_producto.split('-');
+
+  if (partes.length === 3) {
+    var anio = parseInt(partes[0], 10);
+    var mes = parseInt(partes[1], 10) - 1; // Restamos 1 porque los meses comienzan en 0
+    var dia = parseInt(partes[2], 10);
+
+    var fechaActual = new Date();
+    var fechaSeleccionadaObj = new Date(anio, mes, dia);
+
+    if (fechaSeleccionadaObj > fechaActual) {
+      document.getElementById('fecha_producto').style.borderColor = "red";
+      document.getElementById('message_fecha').textContent = 'fecha invalida';
+      setTimeout(color2 , 2000)
+     
+    }
+    else
+    {
+      document.getElementById('fecha_producto').style.borderColor = "";
+      document.getElementById('message_fecha').textContent = '';
+
+    }
+
+    
+  }
+  else 
+  {
+    alert('Formato de fecha no válido.');
+  }
+
+}
+
+}
+
+function color2(){
+  document.getElementById('fecha_producto').style.borderColor = "";
+  document.getElementById('message_fecha').textContent = '';
+  document.getElementById('fecha_producto').value = '';
+}
+
+
+function enviarDatosAlServidor() {
+    Swal.fire({
+    title: "Registrar Transaccion ",
+    showDenyButton: true,
+    confirmButtonText: "Si, Registrar",
+    denyButtonText: `No registrar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Realiza una solicitud POST al servidor
+      fetch('/addproduct', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(listaDeProductos) // Convierte la lista a JSON
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Procesa la respuesta del servidor si es necesario
+          
+
+          Swal.fire({
+            title: "Good job!",
+            text: "Transacion registrada",
+            icon: "success"
+          });
+          location.href = '/addproduct';
+          
+          console.log('Respuesta del servidor:', data);
+        })
+        .catch(error => {
+            console.error('Error al enviar datos al servidor:', error);
+        });
+      
+      
+    }
+    else if (result.isDenied) {
+      Swal.fire("Transaccion no guardada", "", "info");
+    }
+  });
+    
+}
+
+async function consultarServidor() {
+    try {
+        let inputValue = document.getElementById('id_product').value;
+
+        // Realizar la solicitud al servidor utilizando fetch
+        let response = await fetch(`/search?q=${inputValue}`);
+        
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        // Obtener la respuesta en formato JSON
+        let data = await response.json();
+
+        // Hacer algo con los datos obtenidos
+        mostrarResultado(data);
+    } catch (error) {
+        console.error('Error al consultar al servidor:', error);
+
+        // Si response no está definido, podrías imprimir el mensaje de error directamente
+        console.error('Respuesta del servidor:', error.message);
+    }
+}
+  function mostrarResultado(data) {
+      // Muestra los resultados en el elemento con id "resultado"
+      document.getElementById('resultado').innerHTML = JSON.stringify(data);
+  }
+
+
+
+</script>
+
+
+<script>
+
+    function filter() {
+      
+    var input, filter, ul, li, i;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    ul = document.querySelector(".dos");
+    li = ul.getElementsByTagName("li");
+
+    for (i = 1; i < li.length; i++) { // Comenzamos desde 1 para omitir el primer elemento (campo de búsqueda)
+        var cardTitle = li[i].querySelector(".nombrepro");
+        var searchText = cardTitle.innerText ;
+        
+        if (searchText.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+
+</script>
+<script src="/static/js/navbar.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/static/js/awesomplete.js" ></script>
+
+{% endblock %}
+

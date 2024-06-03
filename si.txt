@@ -1,0 +1,141 @@
+
+<table class="table table-dark table-striped">
+<thead>
+    <tr>
+        <th scope="col">NombreProducto</th>
+        <th scope="col">NombreCliente</th>
+        <th scope="col">FechaSalida</th>
+        <th scope="col">CantidadSalida</th>
+        <th scope="col">PrecioProducto</th>
+        <th scope="col"></th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in registro %}
+    <tr>
+        <td>{{row.id }}</td>
+        <td>{{row.nombre}}</td>
+        <td>{{row.contraseña}}</td>
+        <td>{{row.correo}}</td>
+        <td>  
+          <a href="#" class="btn btn-primary btn-sm editar-producto" data-id="{{ row.id }}" data-nombre="{{ row.nombre }}" data-contraseña="{{ row.contraseña }}" data-correo="{{ row.correo }}" data-imagen="{{ imagen }}"><i class="fas fa-pencil"></i></a>
+            <!---<a class="btn btn-danger btn-sm eliminar-producto"><i class="fa fa-trash"></i></a></td> -->
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+<!-- Ventana modal -->
+<div id="editarModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <div class="modal-body">
+         <!-- Imagen -->
+
+         
+         <div class="card mb-3" >
+            <div class="row g-0">
+                <div class="col-md-4">
+                  <img id="imagenProductos" src="" class="img-fluid" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <label for="nombreProducto">imagen</label>
+                    <input  type="file" id="imageninput" accept="image/*" />
+                  </div>
+                </div>
+            </div>
+          </div>
+
+
+        <input type="hidden" id="idProducto">
+
+        <div class="form-group">
+          <label for="nombreProducto">Nombre </label>
+          <input type="text" class="form-control" id="nombreProducto">
+        </div>
+        <div class="form-group">
+          <label for="contraseñaProducto">Contraseña </label>
+          <input type="password" class="form-control" id="contraseñaProducto">
+        </div>
+        <div class="form-group">
+          <label for="correoProducto">Correo </label>
+          <input type="email" class="form-control" id="correoProducto">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary guardar-cambios">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $('.editar-producto').click(function() {
+      var id = $(this).data('id');
+      var nombre = $(this).data('nombre');
+      var contraseña = $(this).data('contraseña');
+      var correo = $(this).data('correo');
+      var imagen = $(this).data('imagen'); //predefinida
+
+
+      // Llenar los campos de la ventana modal con los datos del producto
+      $('#idProducto').val(id);
+      $('#imagenProductos').attr('src', imagen);
+      $('#nombreProducto').val(nombre);
+      $('#contraseñaProducto').val(contraseña);
+      $('#correoProducto').val(correo);
+
+      // Mostrar la ventana modal
+      $('#editarModal').modal('show');
+    });
+
+    $('.guardar-cambios').click(function() {
+      var id = $('#idProducto').val();
+      var nombre = $('#nombreProducto').val();
+      var contraseña = $('#contraseñaProducto').val();
+      var correo = $('#correoProducto').val();
+      var imagen = $('#imageninput')[0].files[0]; // Obtener el archivo de imagen
+
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('nombre', nombre);
+      formData.append('contraseña', contraseña);
+      formData.append('correo', correo);
+      formData.append('imagen', imagen);
+
+      $.ajax({
+        url: '/edituser',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          // Manejar la respuesta del servidor si es necesario
+          console.log(response);
+        },
+        error: function(error) {
+          // Manejar el error si ocurre
+          console.error(error);
+        }
+      });
+
+      // Cerrar la ventana modal
+      $('#editarModal').modal('hide');
+    });
+  });
+</script>
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <link rel="icon" type="image/png" href="static/img/kdletraB.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!--sweet alert-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+</head>
+<body >
+    
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+          <div class="col-lg-7 text-center text-lg-start" >
+            <img src="static/img/kdLg.png" class="img-thumbnail" alt="..." style="border: none;">
+          </div>
+          <div class="col-md-10 mx-auto col-lg-5">
+            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action="/login" method="POST">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username" required>
+                <label for="floatingInput">Username</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
+                <label for="floatingPassword">Password</label>
+              </div>
+              
+              <button class="w-100 btn btn-lg btn-primary" type="submit">iniciar sesión</button>
+              <hr class="my-4">
+              <small class="text-body-secondary"><a href="/recuperaForm"> Restablecer contraseña</a></small>
+            </form>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+      <script>
+        // Recupera el mensaje de error pasado desde Flask
+        var errorMensaje = "{{ error_message }}";
+    
+        // Verifica si hay un mensaje de error y muestra la modal correspondiente
+        if (errorMensaje) {
+          console.log(errorMensaje)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMensaje
+          });
+        }
+      </script>
+       <script>
+        // Recupera el mensaje de éxito pasado desde Flask
+        var successMensaje = "{{ success_message }}";
+    
+        // Muestra la alerta de éxito con SweetAlert2
+        if (successMensaje){
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: successMensaje
+            });
+        }
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>
+

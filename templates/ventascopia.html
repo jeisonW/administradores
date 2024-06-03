@@ -1,0 +1,314 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Ventas
+{% endblock %}
+
+{% block main %}
+
+<style>
+  /* Agregar desplazamiento vertical */
+  #contenedorTarjetas {
+      max-height: 300px; /* Establece la altura máxima */
+      overflow-y: auto; /* Agregar desplazamiento vertical */
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/button.css">
+
+<section class="p-4 my-container">
+    
+    <div class="navbar1">
+        <div class="left-content">
+            <button type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+        </div>
+        <a href="/logout"> 
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>  
+        {% if session["user_id"][0][1] == 'admin' %}
+  
+        <a href="/edituser"> Usuarios </a>
+        {% endif %}
+  
+    </div>  
+       
+    <link rel="stylesheet" href="/static/css/productosnuevos.css"> 
+
+    <div class="form-container" style="color: black;">
+      
+        <form  enctype="multipart/form-data" class="needs-validation" novalidate id="form_validation">
+            {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alerta1">
+                <strong></strong> {{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+      
+            {% if succes %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="alerta1">
+                <strong></strong> {{ succes }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+          
+            <h2 class="form-title">Registrar Ventas</h2>
+
+            <div class="row">
+                <div class="col-12 text-center justify-content-center" id="divcliente">
+                    <label class="form-label" for="nombre">Selecciona Cliente *
+
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropCliente" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes Disponibles
+                        </button>
+                        <ul class="dropdown-menu dos" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <li>
+                                <input type="text" id="searchInputCliente" onkeyup="filterCliente()" placeholder="Buscar..." >
+                            </li>
+                            {% for row in empleado %}
+                            <li>
+                                <h5 class="nombrepro" onclick="selectCliente('{{row.IDempleado}}', '{{row.NombreEmpleado}}')">{{row.NombreEmpleado}}</h5>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <input type="hidden" class="form-control" name="codigoCliente" id="codigoCliente" required>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label class="form-label" for="producto">Selecciona Producto *
+
+                        <button class="btn btn-secondary btn-sm dropdown-toggle " type="button" id="dropProducto" data-bs-toggle="dropdown" aria-expanded="false">
+                            Productos Disponibles
+                        </button>
+                        <ul class="dropdown-menu dos" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <li>
+                                <input type="text" id="searchInputProducto" onkeyup="filterProducto()" placeholder="Buscar..." >
+                            </li>
+                            {% for row in datos %}
+                            <li>
+                                <h5 class="nombrepro" onclick="selectProducto('{{row.CodigoProducto}}', '{{row.NombreProducto}}')">{{row.NombreProducto}}</h5>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <input type="hidden" class="form-control" name="codigoProducto" id="codigoProducto" required>
+                    </label>
+                </div>
+
+                <div class="col-4">
+                    <label class="form-label" for="cantidad_vendida">Cantidad Vendida *
+                        <input type="number" name="cantidad_vendida" id="cantidad_vendida" class="form-control" min="1" required>
+                    </label>
+                </div>
+
+                <div class="col-4">
+                    <label class="form-label" for="precio_venta">Precio de Venta *
+                        <input type="number" name="precio_venta" id="precio_venta" class="form-control" min="1" required>
+                    </label>
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+            
+            <button class="form-submit" id="agregarDetalleVenta" type="button">Agregar detalle</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="row " >
+            <div class="col-md d" >
+                <div id="contenedorDetallesVenta" class="row"></div>
+                <span id="totalVenta">  </span>
+            </div>
+            <button id="guardarVenta" hidden="true">Guardar Venta</button>
+        </div>
+    </div>
+
+</section>
+
+<script>
+var listaDeDetallesVenta = [];
+let detalleVentaIndex = 0;
+let countDetallesVenta = 0;
+
+function totalVenta(){
+    var totalVenta = 0;
+
+    document.getElementById("totalVenta").innerHTML = '';
+
+    for (const detalleVenta of listaDeDetallesVenta) {
+        const precioVenta = parseFloat(detalleVenta.precio_venta);
+        const cantidadVendida = parseFloat(detalleVenta.cantidad_vendida);
+
+        if (!isNaN(precioVenta) && !isNaN(cantidadVendida)) {
+            totalVenta += precioVenta * cantidadVendida;
+        } else {
+            totalVenta = 0;
+            document.getElementById("totalVenta").innerHTML = `Total: ${totalVenta}`;
+        }
+
+        document.getElementById("totalVenta").innerHTML = `Total: ${totalVenta}`;
+    }          
+}
+
+function selectCliente(IDcliente, nombre) {
+    document.getElementById("dropCliente").innerHTML = nombre;
+    document.getElementById('codigoCliente').value = IDcliente;
+}
+
+function selectProducto(codigoProducto, nombreProducto) {
+    document.getElementById("dropProducto").innerHTML = nombreProducto;
+    document.getElementById('codigoProducto').value = codigoProducto;
+}
+
+const formularioVenta = document.getElementById("form_validation");
+
+formularioVenta.addEventListener("submit", function(event) {
+    event.preventDefault();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const botonAgregarDetalleVenta = document.getElementById("agregarDetalleVenta");
+    const contenedorDetallesVenta = document.getElementById("contenedorDetallesVenta");
+    
+    botonAgregarDetalleVenta.addEventListener("click", function() {
+        const cantidadVendida = document.getElementById("cantidad_vendida").value;
+        const precioVenta = document.getElementById("precio_venta").value;
+
+        const codigoCliente = document.getElementById("codigoCliente").value;
+        const codigoProducto = document.getElementById("codigoProducto").value;
+
+        if (codigoCliente && codigoProducto && cantidadVendida && precioVenta) {
+            const detalleVenta = {
+                codigoCliente: codigoCliente,
+                codigoProducto: codigoProducto,
+                cantidad_vendida: cantidadVendida,
+                precio_venta: precioVenta
+            };
+
+            const nuevaDetalleVentaHTML = `
+                <div class="col-md-12 mb-3" data-index="${detalleVentaIndex}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6 class="card-subtitle text-muted">Cliente</h6>
+                                    <p class="card-text">${detalleVenta.codigoCliente}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="card-subtitle text-muted">Producto</h6>
+                                    <p class="card-text">${detalleVenta.codigoProducto}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="card-subtitle text-muted">Cantidad</h6>
+                                    <p class="card-text">${detalleVenta.cantidad_vendida}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="card-subtitle text-muted">Precio</h6>
+                                    <p class="card-text">${detalleVenta.precio_venta}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-danger" onclick="eliminarDetalleVenta(this)">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            listaDeDetallesVenta.push(detalleVenta);
+            const nuevaDetalleVenta = document.createElement("div");
+            nuevaDetalleVenta.innerHTML = nuevaDetalleVentaHTML;
+            contenedorDetallesVenta.appendChild(nuevaDetalleVenta);
+
+            limpiarInputDetalleVenta();
+            detalleVentaIndex++;
+            countDetallesVenta++;
+
+            const detallesRestantes = document.querySelectorAll(".col-md-12");
+            detallesRestantes.forEach((detalle, i) => {
+                detalle.setAttribute("data-index", i);
+            });
+
+            detalleVentaIndex = detallesRestantes.length;
+
+            document.getElementById("guardarVenta").hidden = false;
+            limpiarInputDetalleVenta();
+            totalVenta();
+        } else {
+            alert("Por favor, completa todos los campos antes de agregar el detalle de venta.");
+        }
+    });
+
+    document.getElementById("guardarVenta").addEventListener("click", function() {
+        guardarVenta();
+    });
+});
+
+function limpiarInputDetalleVenta(){
+    document.getElementById("cantidad_vendida").value = '';
+    document.getElementById("precio_venta").value = '';
+    document.getElementById("dropCliente").innerHTML = 'Selecciona Cliente';
+    document.getElementById("dropProducto").innerHTML = 'Selecciona Producto';
+    document.getElementById("codigoCliente").value = '';
+    document.getElementById("codigoProducto").value = '';
+}
+
+function eliminarDetalleVenta(botonEliminar) {
+    const detalleVenta = botonEliminar.closest(".col-md-12");
+    detalleVenta.remove();
+
+    const detallesRestantes = document.querySelectorAll(".col-md-12");
+    detallesRestantes.forEach((detalle, i) => {
+        detalle.setAttribute("data-index", i);
+    });
+
+    const index = detalleVenta.getAttribute("data-index"); 
+    listaDeDetallesVenta.splice(index,  1);
+
+    countDetallesVenta--;
+
+    document.getElementById("guardarVenta").hidden = countDetallesVenta === 0;
+    limpiarInputDetalleVenta();
+    totalVenta();
+}
+
+function guardarVenta() {
+    // Realizar la lógica para enviar la listaDeDetallesVenta al servidor y almacenar en la base de datos.
+    // Puedes utilizar una solicitud fetch() para enviar la lista al servidor.
+
+    // Después de guardar la venta, podrías redirigir al usuario a una página de confirmación o realizar
+    // alguna otra acción según tus necesidades.
+
+    // Ejemplo:
+    // fetch('/guardarVenta', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(listaDeDetallesVenta)
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log('Respuesta del servidor:', data);
+    //     // Realizar acciones adicionales según la respuesta del servidor
+    // })
+    // .catch(error => {
+    //     console.error('Error al enviar datos al servidor:', error);
+    // });
+
+    // Ejemplo de redirección (puedes ajustar esto según tus neces
+    }
+
+</script>
+
+{% endblock %}

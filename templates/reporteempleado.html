@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bulma.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <table id="example" class="table is-bordered is-hoverable is-fullwidth" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="no-export">Codigo de Empleado</th>
+                                <th>Nombre de Empleado</th>
+                                <th>Correo de Empleado</th>
+                                <th>Numero </th>
+                                <th class="no-export">Direccion</th>
+                                <th>Salario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in datos %}
+                            <tr >
+                                <td>{{row.IDempleado }}</td>
+                                <td>{{row.NombreEmpleado}}</td>
+                                <td>{{row.Correo}}</td>
+                                <td>{{row.Telefono}}</td>
+                                <td>{{row.Dirreccion}}</td>
+                                <td>{{row.salario}}</td>
+                               
+                            </tr>
+                            {% endfor %}
+
+                            
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bulma.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.templates.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "order": [[1, "asc"]],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: "excel",
+                        className: "button",
+                        excelStyles: {
+                            template: "green_medium",
+                        },
+                        exportOptions: {
+                            // columns: ':not(.no-export, .id-vuelo)'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        className: "button",
+                        exportOptions: {
+                            // columns: ':not(.no-export, .id-vuelo)'
+                        },
+                        fieldBoundary: '',
+                        fieldSeparator: ',',
+                        header: true,
+                        footer: false,
+                        bom: true,
+                        charset: null,
+                        escapeChar: '"',
+                        quoteFields: true,
+                        decimalSeparator: '.',
+                        customizeData: function (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                for (var j = 0; j < data[i].length; j++) {
+                                    data[i][j] = data[i][j].replace(/"/g, '');
+                                }
+                            }
+                        },
+                    },
+                    {
+                        extend: 'pdf',
+                        className: "button",
+                        exportOptions: {
+                            // columns: ':not(.no-export, .id-vuelo)'
+                        }
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        className: "button"
+                    }
+                ]
+            });
+        });
+    </script>
+
+<script>
+    $(document).on('click', '.download-link', function() {
+        var url = $(this).data('href');
+        var filename = $(this).data('download');
+        var a = $('<a></a>').attr('href', url).attr('download', filename).attr('target', '_blank').appendTo('body');
+        a[0].click();
+        a.remove();
+    });
+</script>
+
+
+</body>
+
+</html>

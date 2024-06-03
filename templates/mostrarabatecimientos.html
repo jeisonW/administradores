@@ -1,0 +1,299 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Abastecimientos
+{% endblock %}
+
+{% block main %}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+  
+
+<style>
+  /* Estilos del Navbar */
+  .modal-body {
+    overflow-x: hidden;
+  }
+
+  </style>
+<link rel="stylesheet" href="static/css/button.css">
+
+
+<section class="p-4 my-container">
+  
+  <div class="navbar1">
+      <div class="left-content">
+          <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+              <i class="fas fa-bars"></i> Menú
+          </button>
+      </div>
+      <a href="/logout"> 
+              <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </a>  
+      {% if session["user_id"][0][1] == 'admin' %}
+
+      <a href="/edituser"> Usuarios </a>
+      {% endif %}
+
+    </div>  
+      
+    
+    
+    <div class="form-group text-center">
+      <input type="text" id="searchAbas" class="form-control mx-auto custom-border" onkeyup="filter()" placeholder="Buscar..." >
+    </div>
+    <table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nombre Del Producto</th>
+            <th scope="col">Nombre Del Proveedor</th>
+            <th scope="col">Cantidad Abastecida</th>
+            <th scope="col">Fecha De Abastecimiento</th>
+            <th scope="col">Gasto Total</th>
+            <th scope="col"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in datos %}
+        <tr>
+            <td class="NombreP">{{row.NombreProducto }}</td>
+            <td class="NombreProv">{{row.Nombreproveedor}}</td>
+            <td class="CantdiaEnt">{{row.CantidadSuministrada}}</td>
+            <td class="FechEnt">{{row.FechaAbastecimiento}}</td>
+            <td class="Precio">{{row.Total_Gasto}}</td>
+            <!--
+            <td> <a href="#" class="btn btn-primary btn-sm editar-producto" data-id="{{row.CODIGOpp}}" data-CodigoProducto="{{row.CodigoProducto}}" data-NombreProducto="{{row.NombreProducto}}" data-NombreProveedor="{{row.NombreProveedor}}" data-fecha="{{row.FechaEntrada}}" data-cantidad="{{row.CantidadEntrada}}" data-gasto="{{row.PrecioT}}" ><i class="fas fa-pencil"></i></a>
+              {% if session["user_id"][0][1] == 'admin' %}
+              <a  href="#" class="btn btn-danger btn-sm eliminar-empleado" data-CODIGOpc="{{row.CODIGOpp}}" ><i class="fa fa-trash"></i></a></td>
+              {% endif %}
+            -->
+            <td>
+              <button onclick="mostrarDetalles('{{ row.id_abas }}')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesModal">Ver Detalles</button>
+            </td>
+
+            
+
+          </tr>
+        {% endfor %}
+    </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles de Abastecimiento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr class="table-info">
+              <th scope="col">CodigoProducto</th>
+              <th scope="col">CantidadSuministrada</th>
+              <th scope="col">PrecioUnitario</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+
+        <div id="detallesContenido"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+<!--
+
+ <form action="/editarabastecimiento" method="post"  enctype="multipart/form-data">
+    <div id="editarModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+              <button type="button" class="close ocultar" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <div class="modal-body">
+              Imagen 
+            <input type="hidden" id="idProducto" name="idProducto">
+            <input type="hidden" id="idbastecimiento" name="idbastecimiento">
+
+            <div class="form-group">
+              <label for="nombreProducto">Nombre Producto</label>
+              <input type="text" class="form-control" id="NombreProducto"  disabled>
+              <input type="hidden"  id="NombreProductos" name="NombreProducto">
+            </div>
+            <div class="form-group">
+                <label for="nombreProducto">Nombre Proveedor</label>
+                <input type="text" class="form-control" id="NombreProveedor" disabled>
+                <input type="hidden"  id="NombreProveedors" name="NombreProveedor">
+
+              </div>
+            <div class="form-group">
+              <label for="colorProducto">Fecha </label>
+              <input type="date" class="form-control" id="fecha"  name="fecha"  min="2023-01-01" required>
+            </div>
+            <div class="form-group">
+              <label for="tallaProducto">Cantidad</label>
+              <input type="number" class="form-control" id="cantidad" min="1" name="cantidad" required>
+            </div>
+            <div class="form-group">
+                <label for="tallaProducto">Gasto </label>
+                <input type="number" class="form-control" id="gasto" min="1" name="gasto" required>
+            </div>
+           
+          </div>
+    
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary guardar-cambios">Guardar</button>
+            <button type="button" class="btn btn-secondary ocultar" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    
+    <form action="/eliminaraba" method="post" id="deleteForm">
+      <input type="hidden" id="ideli" name="idhiddenform">    
+      <input type="hidden" name="tabla" >
+  </form>
+-->
+</section>
+
+
+<script src="/static/js/navbar.js"></script>
+<!--js bootstraps-->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--No borrar scrip para que funcione el dropdown-->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<!--js propio-->
+<script>
+
+function mostrarDetalles(abastecimientoId) {
+        // Realizar una solicitud al servidor para obtener los detalles del abastecimiento
+        fetch('/ver_detalles/' + abastecimientoId)
+            .then(response => response.json())
+            .then(data => {
+
+              var cuerpoTabla = document.querySelector('#detallesModal tbody');
+
+            cuerpoTabla.innerHTML = '';
+
+            // los detalles enviados de la funcion son estos,  estoy iterando sobre ellos
+            data.forEach(function(detalle) {
+                var fila = cuerpoTabla.insertRow();
+
+                var celdas = ['CodigoProducto', 'CantidadSuministrada', 'PrecioUnitario'];
+
+                celdas.forEach(function(celda) {
+                    var td = fila.insertCell();
+                    td.innerHTML = detalle[celda];
+                });
+            })
+            })
+            .catch(error => console.error('Error al obtener detalles:', error));
+    }
+
+    function filter() {
+        var input, filter, tbody, td, i;
+        input = document.getElementById("searchAbas");
+        filter = input.value.toUpperCase();
+        tbody = document.querySelector(".table");
+        td = tbody.getElementsByTagName("tr");
+
+        for (i = 1; i < td.length; i++) { // Comenzamos desde 1 para omitir el primer elemento (campo de búsqueda)
+            var nombre = td[i].querySelector(".NombreP");
+            var nombreProv = td[i].querySelector(".NombreProv");
+            var cantidad = td[i].querySelector(".CantdiaEnt");
+            var fecha = td[i].querySelector(".FechEnt");
+            var precio = td[i].querySelector(".Precio");
+
+            var searchText = nombre.innerText + " " + nombreProv.innerText + " " + cantidad.innerText + " " + fecha.innerText + " " + precio.innerText;
+            if (searchText.toUpperCase().indexOf(filter) > -1) {
+                td[i].style.display = "";
+            } else {
+                td[i].style.display = "none";
+            }
+        }
+    }
+/*
+    $(document).ready(function() {    
+        $('.editar-producto').click(function() {
+            var id = $(this).data('id');
+            var fecha = $(this).data('fecha');
+            var cantidad = $(this).data('cantidad');
+            var gasto = $(this).data('gasto');
+            var NombreProveedor = $(this).data('nombreproveedor');
+            var NombreProducto = $(this).data('nombreproducto');
+            var CodigoProducto = $(this).data('codigoproducto');
+
+
+            $('#idProducto').val(CodigoProducto);
+            $('#idbastecimiento').val(id);
+            $('#fecha').val(fecha);
+            $('#cantidad').val(cantidad);
+            $('#gasto').val(gasto);
+            $('#NombreProveedor').val(NombreProveedor);
+            $('#NombreProducto').val(NombreProducto);
+
+            $('#NombreProductos').val(NombreProducto);
+            $('#NombreProveedors').val(NombreProveedor);
+
+
+
+          // Mostrar la ventana modal
+          $('#editarModal').modal('show');
+        });
+
+        $('.ocultar').click(function() {
+         $('#editarModal').modal('hide');
+        });
+    });
+
+
+
+    
+$(document).ready(function() {
+        
+        $('.eliminar-empleado').click(function() {
+        var CodigoSP = $(this).data('codigopc');
+        console.log(CodigoSP)
+        Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas eliminar el registro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+        
+      }).then((result) => {
+       
+        if (result.isConfirmed) {
+            $('#ideli').val(CodigoSP);
+            document.getElementById("deleteForm").submit();
+    
+        } else {
+          console.log("Eliminación cancelada");
+        }
+        });
+    
+        });
+    
+            
+    });
+    
+*/
+</script>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+ /* Estilos del Navbar */
+ .navbar1 {
+    background-color: #f6f6f6;
+    overflow: hidden;
+    padding-left: 50px;
+    padding-top: 30px;
+  }
+
+  .navbar1 a {
+    float: right;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  .navbar1 a:hover {
+    color: rgb(255, 0, 0);
+  }
+
+  .navbar1 .left-content {
+    float: left;
+  }

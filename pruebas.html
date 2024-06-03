@@ -1,0 +1,790 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+
+
+{% block main %}
+
+  
+    <link rel="stylesheet" href="static/css/button.css">
+  
+  
+  <section class="p-4 my-container">
+    
+    <div class="navbar1">
+        <div class="left-content">
+            <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+        </div>
+        <a href="/logout"> 
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>  
+        {% if session["user_id"][0][1] == 'admin' %}
+  
+        <a href="/edituser"> Usuarios </a>
+        {% endif %}
+  
+      </div>  
+       
+    <link rel="stylesheet" href="/static/css/productosnuevos.css"> 
+
+    <div class="form-container">
+         <!-- <form action="/addproduct" method="post" enctype="multipart/form-data">
+            {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alerta1">
+                <strong></strong> {{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+             {% endif %}
+      
+            {% if succes %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="alerta1">
+                <strong></strong> {{ succes }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+          -->
+
+
+        <div class="row">
+          <h2 class="form-title">Registrar Productos</h2>
+
+            <div class="col-4">
+              <label class="form-label" for="nombre">Seleciona Proveedor *</label>
+
+                  <button class="btn btn-secondary dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false" id="editar" >
+                    Proveedor Disponibles
+                  </button>
+                  <ul class="dropdown-menu dos" style="max-height: 200px; overflow-y: auto; overflow-x: hidden;">
+                    <li>
+                          <input type="text" id="searchInput" onkeyup="filter()" placeholder="Buscar..." >
+                    </li>
+                    {% for row in proveedor %}
+                    <li  >
+                      <h5 class="nombrepro" onclick="selectProveedor('{{row.IDproveedor}}' , '{{row.Nombreproveedor}}')">{{row.Nombreproveedor}}</h5>
+                    </li>
+                    {% endfor %}
+                  </ul>
+            </div>
+            <div class="col-8 text-center justify-content-center pt-3">
+                  <h4 class="text-center" id="nombreproveedor"> </h4>
+                  <input type="hidden" name="codigoproveedor" class="prov" >
+            </div>
+
+            <div class="w-100"></div>
+      
+            <div class="col">
+                <label class="form-label" for="color">Fecha de registro *:
+                    <input type="date" class="form-input" name="fecha" placeholder="########"  min="2023-01-01" id="fechas"  onclick="validarFecha()"  required>
+                </label>
+            </div>
+      
+            <!--
+              <div class="col">
+                  <label class="form-label" for="nombre">Ingresa foto del producto:
+                    <input class="form-input"  type="file" name="imageninput" accept="image/*" />
+                  </label>
+              </div>
+            -->
+
+
+            <div class="w-100"></div>
+            <div class="container-lg ">
+              <table class="table table-hover table-responsive table-bordered border-dark">
+                <thead class="text-dark">
+                  <tr class="fs-6 text">
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre del producto</th>
+                    <th scope="col">Imagen del producto</th>
+                    <th scope="col">Color </th>
+                    <th scope="col">Talla</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Precio de compra</th>
+                    <th scope="col">Precio de Venta</th>
+                    <th scope="col">Cantidad suministrada</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-light">
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>
+                      <input class="form-control-file"  type="file" name="" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <td>  
+                      <input class="form-control" style="width: 100%; height: 100%;" type="text" id="">
+                    </td>
+                    <!--
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    <td><input class="form-group"  type="text" name="" id=""></td>
+                    -->
+                  </tr>
+
+                
+                </tbody>
+              </table>
+            </div>
+        </div>
+
+        <!--
+          <div class="row">
+              <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label" for="nombre">Nombre del Producto *:</label>
+                    <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                  </div>
+              </div>   
+              <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label" >Color *:</label>
+                    <input  class="form-input" type="text" id="nombre" name="color"  required>
+                  </div>
+              </div>   
+          </div>
+          <div class="w-100"></div>
+          <div class="row">
+      
+            <div class="col">   
+                <label class="form-label" for="nombre">Categoria *:
+                <input type="text" name="categoria" class="form-input" required>
+                </label>
+            </div>
+      
+            <div class="col">
+              <label class="form-label" for="talla">marca *:
+                <input class="form-input" type="text" name="marca" placeholder="" required>        
+              </label>
+            </div>
+      
+            <div class="w-100"></div>
+      
+            <div class="col">
+              <label class="form-label" for="color"> Precio de compra *:
+                <input type="number" name="precioc" placeholder="" required class="form-input"  min="1" >
+              </label>
+            </div>
+      
+            <div class="col">
+              <label class="form-label" for="color">Precio de venta  *:
+                <input type="number" name="preciov" placeholder="" required class="form-input"  min="1">
+              </label>
+            </div>
+      
+            <div class="w-100"></div>
+      
+            <div class="col">
+                <label class="form-label" for="color"> Cantidad *:
+                  <input type="number" name="cantidad" placeholder="" required class="form-input" min="1" >
+                </label>
+            </div>
+      
+            <div class="col">
+              <label class="form-label" for="color">Talla *:
+                <input type="number" name="talla" placeholder="" required class="form-input"  min="20" >
+              </label>
+            </div>
+      
+           
+          </div>
+      
+            <button class="form-submit" type="submit">Registrar</button>
+          </form>
+
+          -->
+    </div>
+
+</section>
+<script>
+  setTimeout(function() {
+      document.getElementById("alerta1").remove();
+  }, 3000);
+
+  function selectProveedor(IDproveedor , nombre) {
+        document.getElementById("nombreproveedor").innerHTML = nombre;
+        document.querySelector('.prov').value = IDproveedor;
+    };
+
+    function filter() {
+    var input, filter, ul, li, i;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    ul = document.querySelector(".dos");
+    li = ul.getElementsByTagName("li");
+
+    for (i = 1; i < li.length; i++) { // Comenzamos desde 1 para omitir el primer elemento (campo de búsqueda)
+        var cardTitle = li[i].querySelector(".nombrepro");
+        var searchText = cardTitle.innerText ;
+        
+        if (searchText.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+function validarFecha() {
+      var fechaSeleccionada = document.getElementById("fechas").value
+      var fechaActual = new Date();
+      var inputfecha = document.getElementById("fechas").value
+
+      console.log(fechaActual)
+
+      console.log(fechaSeleccionada)
+
+      if (fechaSeleccionada > fechaActual) {
+        inputfecha.innerText('La fecha no puede ser posterior a la fecha actual');
+      } else {
+        inputfecha.innerText('');
+      }
+    }
+
+
+
+</script>
+<script src="/static/js/navbar.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+{% endblock %}
+
+
+<!-- card de addproduct -->
+
+<div class="col-md-12">
+  <div class="card mb-3">
+     
+      <div class="card-body">
+          <div class="row">
+              <div class="col-md-3">
+                  <h6 class="card-subtitle text-muted">Código de Producto</h6>
+                  <p class="card-text">12345</p>
+
+                  <h6 class="card-subtitle text-muted">Nombre de Producto</h6>
+                  <p class="card-text">Ejemplo de Producto</p>
+
+
+                  <h6 class="card-subtitle text-muted">Foto</h6>
+                  <p class="card-text">[Insertar imagen]</p>
+                
+                
+              </div>
+              <div class="col-md-3">
+
+                <h6 class="card-subtitle text-muted">Precio de Compra</h6>
+                <p class="card-text">$10.00</p>
+
+                  <h6 class="card-subtitle text-muted">Precio de Venta</h6>
+                  <p class="card-text">$20.00</p>
+
+
+                  <h6 class="card-subtitle text-muted">Cantidad</h6>
+                  <p class="card-text">50</p>
+              </div>
+              <div class="col-md-3">
+                  
+                <h6 class="card-subtitle text-muted">Color de Producto</h6>
+                <p class="card-text">Rojo</p>
+
+                  <h6 class="card-subtitle text-muted">Marca</h6>
+                  <p class="card-text">Marca XYZ</p>
+
+                  <h6 class="card-subtitle text-muted">Categoría</h6>
+                  <p class="card-text">Categoría XYZ</p>
+              </div>
+
+              <div class="col-md-3">
+
+                
+                <h6 class="card-subtitle text-muted">Talla</h6>
+                <p class="card-text">M</p>
+
+                <h6 class="card-subtitle text-muted">Fecha</h6>
+                <p class="card-text">2023-11-03</p>
+
+               
+              </div>
+
+              <!-- Agrega más atributos aquí -->
+          </div>
+      </div>
+      <div class="card-footer">
+          <button class="btn btn-danger">Eliminar</button>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+                    console.log("el boton hace algo")
+
+          }
+
+          form.classList.add('was-validated')
+      })
+
+
+
+
+
+
+      {% extends "layout.html" %}
+
+      {% block title %}
+          Productos
+      {% endblock %}
+      
+      
+      
+      {% block main %}
+      
+      <style>
+        /* Agregar desplazamiento vertical */
+        #contenedorTarjetas {
+            max-height: 300px; /* Establece la altura máxima */
+            overflow-y: auto; /* Agregar desplazamiento vertical */
+        }
+      </style>
+      
+        
+        <link rel="stylesheet" href="static/css/button.css">
+        
+        
+        <section class="p-4 my-container">
+          
+          <div class="navbar1">
+              <div class="left-content">
+                  <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                      <i class="fas fa-bars"></i> Menú
+                  </button>
+              </div>
+              <a href="/logout"> 
+                      <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+              </a>  
+              {% if session["user_id"][0][1] == 'admin' %}
+        
+              <a href="/edituser"> Usuarios </a>
+              {% endif %}
+        
+            </div>  
+             
+          <link rel="stylesheet" href="/static/css/productosnuevos.css"> 
+      
+          <div class="form-container" style="color: black;">
+            
+                <form  enctype="multipart/form-data" class="needs-validation" novalidate id="form_validation">
+                  {% if error %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alerta1">
+                      <strong></strong> {{ error }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                   {% endif %}
+            
+                  {% if succes %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert" id="alerta1">
+                      <strong></strong> {{ succes }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  {% endif %}
+                
+                <h2 class="form-title">Registrar Productos</h2>
+      
+      
+                <div class="row">
+                  <div class="col-12 text-center justify-content-center" id="divproveedor">
+                    <label class="form-label" for="nombre">Seleciona Proveedor *
+      
+                        <button class="btn btn-secondary btn-sm dropdown-toggle " type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false" id="editar" >
+                          Proveedor Disponibles
+                        </button>
+                        <ul class="dropdown-menu dos" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;" >
+                          <li>
+                                <input type="text" id="searchInput" onkeyup="filter()" placeholder="Buscar..." >
+                          </li>
+                          {% for row in proveedor %}
+                          <li  >
+                            <h5 class="nombrepro" onclick="selectProveedor('{{row.IDproveedor}}' , '{{row.Nombreproveedor}}')">{{row.Nombreproveedor}}</h5>
+                          </li>
+                          {% endfor %}
+                        </ul>
+      
+                        <input type="hidden" class="form-control" name="codigoproveedor" id="codigoproveedor" required  >
+                      </label>
+                  </div>
+                 
+                 </div>
+      
+                <div class="row">
+                    <div class="col-4">
+                      <label class="form-label"for="validationCustom01" >Ingresa Codigo del producto 
+                        <input class="form-control" type="text" name="id_product"  id="id_product"required title="Este campo es obligatorio" />
+          
+                      </label>
+                        
+                    </div> 
+      
+                    <div class="col-4">
+      
+                      <label class="form-label" for="nombre">Nombre del Producto *:
+                        <input class="form-control" type="text" id="name_producto" name="nombre"  required>
+                        
+                      </label>
+                      
+                    </div>
+      
+                    <div class="col-4">
+                      <label class="form-label" for="color">Talla *:
+                        <input type="number" name="talla" id="talla_producto" placeholder="" required class="form-control"  min="20" >
+                        
+                      </label>
+                    </div>
+                   
+                </div>
+            
+                <div class="w-100"></div>
+                <div class="row">
+            
+                  <div class="col-4">   
+                      <label class="form-label" for="nombre">Categoria *:
+                      <input type="text" name="categoria" class="form-control" id="categoria_producto" required>
+                      
+                      </label>
+                  </div>
+            
+                  <div class="col-4">
+                    <label class="form-label" for="talla">marca *:
+                      <input class="form-control" type="text" name="marca" id="marca_producto" placeholder="" required>        
+                      
+                    </label>
+                  </div>
+      
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label class="form-label" >Color *:</label>
+                      <input  class="form-control" type="text" id="color_producto" name="color"  required>
+                      
+                    </div>
+                  </div>   
+            
+                  <div class="w-100"></div>
+            
+                  <div class="col-4">
+                    <label class="form-label" for="color"> Precio de compra *:
+                      <input type="number" name="precioc" id="preciocompra" class="form-control"  min="1"  required>
+                      
+                    </label>
+                  </div>
+            
+                  <div class="col-4">
+                    <label class="form-label" for="color">Precio de venta  *:
+                      <input type="number" name="preciov"  id=precioventa class="form-control"  min="1" required>
+                      
+                    </label>
+                  </div>
+      
+                  <div class="col-4">
+                    <label class="form-label" for="color"> Cantidad *:
+                      <input type="number" name="cantidad"  id="cantidad_producto" class="form-control" min="1" required>
+                      
+                    </label>
+                  </div>
+          
+            
+                  <div class="w-100"></div>
+      
+                    <div class="row justify-content-evenly">
+                      <div class="col-4">
+                        <label class="form-label" for="color">Fecha de registro *:
+                          <input type="date" class="form-control" name="fecha"   min="2023-01-01" id="fecha_producto" onblur="fecha2()" required>
+                          
+                          <p id="message_fecha" style="color: red;"> </p>
+                        </label>                
+                      </div>
+                      <div class="col-4">
+                        <label class="form-label" for="imagen_producto">Ingresa foto del producto:
+                          <input class="form-input" id="imagen_producto" type="file" name="imageninput" accept="image/*" />
+                        </label>
+                      </div>
+                    </div>
+                </div>
+      
+                
+                  <button class="form-submit" id="agregarTarjeta" type="submit">Agregar detalle</button>
+                    </form> 
+            </div>
+              <br>
+      
+              <div class="container"  >
+                <div class="row "   >
+                    <div class="col-md d" >
+                        <div id="contenedorTarjetas"  class="row"></div>
+      
+                        <span id="total">  </span>
+                    </div>
+                    <button id="enviarDatos" hidden="true">Guardar Transaccion </button>
+                    
+                </div>
+            </div>
+      
+      
+      </section>
+      <script>
+      
+      var listaDeProductos = []; // Arreglo para almacenar productos
+      let tarjetaIndex = 0; // Índice de tarjetas
+      let counttarjet = 0 ;
+      
+     
+      function selectProveedor(IDproveedor , nombre) {
+          
+          document.getElementById("drop").innerHTML = nombre;
+          document.getElementById('codigoproveedor').value = IDproveedor;
+      };
+      
+      const formulario = document.getElementById("form_validation");
+      
+      formulario.addEventListener("submit", function(event) {
+        event.preventDefault();
+      });
+      
+      
+      
+        document.addEventListener("DOMContentLoaded", function() {
+      
+      
+          document.getElementById("enviarDatos").addEventListener("click", function() {
+              enviarDatosAlServidor();
+          });
+        
+            const botonAgregar = document.getElementById("agregarTarjeta");
+      
+      
+            const contenedorTarjetas = document.getElementById("contenedorTarjetas");
+            botonAgregar.addEventListener("click", function() 
+            {
+      
+              const forms = document.querySelectorAll('.needs-validation')
+      
+              // Loop over them and prevent submission
+              Array.from(forms).forEach(form => {
+                  if (!form.checkValidity()) {
+                    event.preventDefault()
+      
+                  }
+      
+                  form.classList.add('was-validated')
+              })
+      
+              var codigoproveedor = document.getElementById("codigoproveedor").value;
+              var imagen_producto= document.getElementById("imagen_producto");
+      
+              var archivoSeleccionado = imagen_producto.files[0];
+      
+              var producto = {
+                id_product: document.getElementById("id_product").value,
+                imagen_producto :archivoSeleccionado,
+                name_producto: document.getElementById("name_producto").value,
+                talla_producto: document.getElementById("talla_producto").value,
+                categoria_producto: document.getElementById("categoria_producto").value,
+                marca_producto: document.getElementById("marca_producto").value,
+                color_producto: document.getElementById("color_producto").value,
+                preciocompra: document.getElementById("preciocompra").value,
+                precioventa: document.getElementById("precioventa").value,
+                cantidad_producto: document.getElementById("cantidad_producto").value,
+                fecha_producto: document.getElementById("fecha_producto").value,
+                codigoproveedor: document.getElementById("codigoproveedor").value
+              };
+      
+              if (!codigoproveedor){
+                alert("Selecciona un proveedor");
+              }
+              else{
+      
+                if (producto.id_product && producto.name_producto && producto.talla_producto && producto.categoria_producto
+                   && producto.marca_producto && producto.color_producto && producto.preciocompra 
+                   && producto.precioventa && producto.cantidad_producto && producto.fecha_producto && producto.codigoproveedor)
+                {
+      
+                 
+                
+                const nuevaTarjetaHTML = `
+                    <div class="col-md-12 mb-3" data-index="${tarjetaIndex}">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6 class="card-subtitle text-muted">Código de Producto</h6>
+                                        <p class="card-text">${producto.id_product}</p>
+                                        <h6 class="card-subtitle text-muted">Nombre de Producto</h6>
+                                        <p class="card-text">${producto.name_producto}"</p>
+                                        <h6 class="card-subtitle text-muted">Foto</h6>
+                                        <p class="card-text">${producto.imagen_producto}</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6 class="card-subtitle text-muted">Precio de Compra</h6>
+                                        <p class="card-text">${producto.preciocompra}</p>
+                                        <h6 class="card-subtitle text-muted">Precio de Venta</h6>
+                                        <p class="card-text">${producto.precioventa}</p>
+                                        <h6 class="card-subtitle text-muted">Cantidad</h6>
+                                        <p class="card-text">${producto.cantidad_producto}</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6 class="card-subtitle text-muted">Color de Producto</h6>
+                                        <p class="card-text">${producto.color_producto}</p>
+                                        <h6 class="card-subtitle text-muted">Marca</h6>
+                                        <p class="card-text">${producto.marca_producto}</p>
+                                        <h6 class="card-subtitle text-muted">Categoría</h6>
+                                        <p class="card-text">${producto.categoria_producto}</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6 class="card-subtitle text-muted">Talla</h6>
+                                        <p class="card-text">${producto.talla_producto}</p>
+                                        <h6 class="card-subtitle text-muted">Fecha</h6>
+                                        <p class="card-text">${producto.fecha_producto}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-danger" onclick="eliminarTarjeta(this)">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                listaDeProductos.push(producto);
+                const nuevaTarjeta = document.createElement("div");
+                nuevaTarjeta.innerHTML = nuevaTarjetaHTML;
+                contenedorTarjetas.appendChild(nuevaTarjeta);
+                document.getElementById("drop").disabled = true;
+                document.getElementById("fecha_producto").disabled = true;
+        
+                document.getElementById("enviarDatos").hidden = false;
+      
+                limpiarinput();
+                tarjetaIndex++; // Incrementa el índice de tarjetas
+                counttarjet++;
+      
+      
+                //Ajusta el contador de índices de tarjeta y el total
+      
+                const tarjetasRestantes = document.querySelectorAll(".col-md-12 ");
+                  tarjetasRestantes.forEach((tarjeta, i) => {
+                     tarjeta.setAttribute("data-index", i);
+                  });
+      
+                  tarjetaIndex = tarjetasRestantes.length;
+      
+                console.log(listaDeProductos);
+      
+                total()
+      
+      
+              }
+              }
+      
+            });
+                
+        });
+      
+        //Esta funcion es para activar el input fecha y el de select proveedores, si no hay tarjetas se activa
+
+          
+      function enviarDatosAlServidor() {
+          Swal.fire({
+          title: "Registrar Transaccion ",
+          showDenyButton: true,
+          confirmButtonText: "Si, Registrar",
+          denyButtonText: `No registrar`
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            // Realiza una solicitud POST al servidor
+            fetch('/addproduct', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(listaDeProductos) // Convierte la lista a JSON
+              })
+              .then(response => response.json())
+              .then(data => {
+                  // Procesa la respuesta del servidor si es necesario
+      
+                Swal.fire({
+                  title: "Good job!",
+                  text: "You clicked the button!",
+                  icon: "success"
+                });
+      
+      
+                console.log('Respuesta del servidor:', data);
+      
+                //location.href = '/addproduct';
+      
+              })
+              .catch(error => {
+                  console.error('Error al enviar datos al servidor:', error);
+              });
+            
+            
+          }
+          else if (result.isDenied) {
+            Swal.fire("Transaccion no guardada", "", "info");
+          }
+        });
+          
+      }
+      
+      </script>
+      
+      
+
+      <script src="/static/js/navbar.js"></script>
+      
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      
+      {% endblock %}

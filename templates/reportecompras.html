@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+
+{% block main %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bulma.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    /* Estilos del Navbar */
+    .navbar1 {
+      background-color: #f6f6f6;
+      overflow: hidden;
+    }
+
+    .navbar1 a {
+      float: right;
+      color: rgb(0, 0, 0);
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navbar1 a:hover {
+      color: rgb(255, 0, 0);
+    }
+
+    .navbar1 .left-content {
+      float: left;
+    }
+
+   
+
+  
+    </style>
+
+
+<section class="p-4 my-container">
+    
+    <div class="navbar1">
+        <div class="left-content">
+            <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+        </div>
+        <a href="/logout"> 
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>  
+        {% if session["user_id"][0][1] == 'admin' %}
+
+        <a href="/edituser"> Usuarios </a>
+        {% endif %}
+
+      </div>
+            <table id="example" >
+                        <thead>
+                            <tr>
+                                <th>Nombre de Proveedor</th>
+                                <th>codigo de Producto</th>
+                                <th>Fecha de Compra</th>
+                                <th>Cantida Comprada </th>
+                                <th>Precio de producto</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                          
+                            {% for row in datos %}
+                            <tr >
+                                <td>{{row.Nombreproveedor}}</td>
+                                <td>{{row.CodigoProducto}}</td>
+                                <td>{{row.FECHA}}</td>
+                                <td>{{row.CantidadSuministrada}}</td>
+                                <td>{{row.PrecioUnitario}}</td>
+                                <td>{{row.GASTO}}</td>
+                            </tr>
+                            {% endfor %}
+
+                            
+                        </tfoot>
+                    </table>
+              
+
+   
+</section>
+
+ <!--js propio-->
+ <script src="/static/js/navbar.js"></script>
+ <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+ <!--iconos font awesome-->
+ <script src="https://kit.fontawesome.com/72d2ae7f6d.js" crossorigin="anonymous"></script>
+ <!--js bootstraps-->
+ <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bulma.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.templates.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "order": [[1, "asc"]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: "excel",
+                    className: "button",
+                    excelStyles: {
+                        template: "green_medium",
+                    },
+                    exportOptions: {
+                        // columns: ':not(.no-export, .id-vuelo)'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    className: "button",
+                    exportOptions: {
+                        // columns: ':not(.no-export, .id-vuelo)'
+                    },
+                    fieldBoundary: '',
+                    fieldSeparator: ',',
+                    header: true,
+                    footer: false,
+                    bom: true,
+                    charset: null,
+                    escapeChar: '"',
+                    quoteFields: true,
+                    decimalSeparator: '.',
+                    customizeData: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            for (var j = 0; j < data[i].length; j++) {
+                                data[i][j] = data[i][j].replace(/"/g, '');
+                            }
+                        }
+                    },
+                },
+                {
+                    extend: 'pdf',
+                    className: "button",
+                    exportOptions: {
+                        // columns: ':not(.no-export, .id-vuelo)'
+                    }
+                },
+                {
+                    extend: 'copyHtml5',
+                    className: "button"
+                }
+            ]
+        });
+    });
+</script>
+
+<script>
+$(document).on('click', '.download-link', function() {
+    var url = $(this).data('href');
+    var filename = $(this).data('download');
+    var a = $('<a></a>').attr('href', url).attr('download', filename).attr('target', '_blank').appendTo('body');
+    a[0].click();
+    a.remove();
+});
+</script>
+
+
+
+{% endblock %}

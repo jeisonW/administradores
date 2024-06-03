@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+<div class="principal">
+    <div class="tarjeta">
+       
+        <div id="login">
+            <div class="titulo">
+                Bienvenido
+            </div>
+          
+            <form id="loginform"  action="/register" method="POST">
+                <input type="text" name="usuario" placeholder="Usuario" required>
+                <input type="password" placeholder="Contraseña" name="password" required>
+                <input type="password" placeholder="confirmacion" name="confirmation" required>
+                <button type="submit" title="Ingresar" name="Ingresar" >registrate</button>
+            </form>
+            <div class="pie-form">
+                <a href="/">¿ya tienes cuenta? inicia sesion </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

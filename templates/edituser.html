@@ -1,0 +1,546 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+{% block main %}
+
+<link rel="stylesheet" href="static/css/button.css">
+<link rel="stylesheet" href="static/css/permisos.css">
+
+<style> 
+#add {
+ border: none;
+ color: #fff;
+ background-image: linear-gradient(30deg, #0400ff, #4ce3f7);
+ border-radius: 20px;
+ background-size: 100% auto;
+ font-family: inherit;
+ font-size: 17px;
+}
+
+#add:hover {
+ background-position: right center;
+ background-size: 200% auto;
+ -webkit-animation: pulse 2s infinite;
+ animation: pulse512 1.5s infinite;
+}
+
+@keyframes pulse512 {
+ 0% {
+  box-shadow: 0 0 0 0 #05bada66;
+ }
+
+ 70% {
+  box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
+ }
+
+ 100% {
+  box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
+ }
+}
+
+</style>
+<section class="p-4 my-container">
+  
+  
+  <div class="navbar1">
+      <div class="left-content">
+          <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+              <i class="fas fa-bars"></i> Menú
+          </button>
+      </div>
+      <a href="/logout"> 
+              <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </a>  
+      {% if session["user_id"][0][1] == 'admin' %}
+
+      <a href="/edituser"> Usuarios </a>
+      {% endif %}
+
+      <a href="#" class="registrar"> 
+        <i class="fa-solid fa-plus"></i> Add
+      </a>
+
+    </div>  
+
+  <table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Permisos</th>
+            <th scope="col"></th>
+
+    
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in registro %}
+          {% if row.nombre == 'admin'%}
+          <tr>
+            <td>{{row.nombre}}</td>
+            <td>{{row.correo}}</td>
+            <td></td>
+            <td>
+            <a href="#" class="btn btn-primary btn-sm editar-empleado" data-id="{{ row.id }}" data-nombre="{{ row.nombre }}" data-contraseña="{{ row.contraseña }}" data-correo="{{ row.correo }}" ><i class="fas fa-pencil"></i></a>
+            </td>
+          </tr>
+          {%endif%}
+        {% endfor %}
+
+        {% for row in registro[1:] %}
+        <tr>
+            <td>{{row.nombre}}</td>
+            <td>{{row.correo}}</td>
+            <td> 
+  
+              <a href="#" class="btn btn-info btn-sm permisos" data-id="{{ row.id }}">Permisos</a> 
+            </td>
+            <td>  
+              <a href="#" class="btn btn-primary btn-sm editar-producto" data-id="{{ row.id }}" data-nombre="{{ row.nombre }}" data-contraseña="{{ row.contraseña }}" data-correo="{{ row.correo }}" ><i class="fas fa-pencil"></i></a>
+              <a  href="#" class="btn btn-danger btn-sm eliminar-empleado" data-CODIGOpc="{{row.id}}" ><i class="fa fa-trash"></i></a>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+
+<form action="/editpermisos" method="post">
+    <!-- Ventana modal de permisos -->
+  <div class="modal fade" id="modalPermisos" tabindex="-1" aria-labelledby="modalPermisosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalPermisosLabel">Seleccionar permisos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+          <input type="hidden" name="id" id="iduser">
+
+          </div>
+        <div style="        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 10% 30%;
+        grid-column-gap: 12px;
+        grid-row-gap: 15px;
+        justify-items: stretch;
+        align-items: stretch; text-align: center; justify-content: center;">
+          
+
+            <label class="form-check-label" for="permiso1">Permiso empleados</label>
+            <label class="form-check-label" for="permiso1">Permiso proveedores</label>
+            <div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="chekcbosxpermision" name="permisoempleado">
+                <div class="toggle-switch-background">
+                  <div class="toggle-switch-handle"></div>
+                </div>
+              </label>
+          </div>
+
+            
+          <div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="chekcbosxpermision1" name="permisoproveedores">
+              <div class="toggle-switch-background">
+                <div class="toggle-switch-handle"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+          <div style="        display: grid;
+          grid-template-columns: 50% 50%;
+          grid-template-rows: 10% 30%;
+          grid-column-gap: 12px;
+          grid-row-gap: 15px;
+          justify-items: stretch;
+          align-items: stretch; text-align: center; justify-content: center;">
+            
+    
+              <label class="form-check-label" for="permiso1">Permiso ventas</label>
+              <label class="form-check-label" for="permiso1">Permiso compras</label>
+              <div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="chekcbosxpermision2" name="permisoventas">
+                  <div class="toggle-switch-background">
+                    <div class="toggle-switch-handle"></div>
+                  </div>
+                </label>
+            </div>
+    
+              
+            <div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="chekcbosxpermision3" name="permisocompras">
+                <div class="toggle-switch-background">
+                  <div class="toggle-switch-handle"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+            <div style="        display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-rows: 10% 30%;
+            grid-column-gap: 12px;
+            grid-row-gap: 15px;
+            justify-items: stretch;
+            align-items: stretch; text-align: center; justify-content: center;">
+              
+      
+                <label class="form-check-label" for="permiso1">Permiso Desperfectos</label>
+                <label class="form-check-label" for="permiso1">Permiso Productos</label>
+                <div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="chekcbosxpermision4" name="permisodesperfecto">
+                    <div class="toggle-switch-background">
+                      <div class="toggle-switch-handle"></div>
+                    </div>
+                  </label>
+              </div>
+      
+                
+              <div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="chekcbosxpermision5" name="permisoproductos">
+                  <div class="toggle-switch-background">
+                    <div class="toggle-switch-handle"></div>
+                  </div>
+                </label>
+              </div>
+
+                
+          <!-- Agrega los demás checkboxes de permisos -->
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+  <form action="/edituser" method="post">
+    <!-- Ventana modal -->
+    <div id="editarModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+    
+            <div class="modal-header">
+              <h5 class="modal-title" id="editarModalLabel">Editar Datos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <div class="modal-body">
+      
+            <input type="hidden" id="iduser" name="user">
+    
+            <div class="form-group">
+              <label for="nombreProducto">Nombre </label>
+              <input type="text" class="form-control" id="nombreProducto" disabled>
+            </div>
+            <div class="form-group">
+              <label for="contraseñaProducto">Contraseña </label>
+              <input type="password" class="form-control" id="contraseñaProducto" name="contraseña" pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,}$" title="La contraseña debe tener al menos 8 caracteres y contener letras mayúsculas y minúsculas." required>
+            </div>
+
+          
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary guardar-cambios">Guardar</button>
+            <button type="button" class=" close btn btn-secondary " data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+
+<form action="/edituser" method="post">
+  <!-- Ventana modal -->
+  <div id="editarModalempleado" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+  
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarModalLabel">Editar Datos</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body">
+    
+          <input type="hidden" id="iduser1" name="user">
+  
+          <div class="form-group">
+            <label for="nombreProducto">Nombre </label>
+            <input type="text" class="form-control" name="nombre" id="nombreempleado" disabled >
+          </div>
+          <div class="form-group">
+            <label for="contraseñaProducto">Contraseña </label>
+            <input type="password" class="form-control" name="contraseña"  id="contraseñaProducto" pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,}$" title="La contraseña debe tener al menos 8 caracteres y contener letras mayúsculas y minúsculas." required>
+          </div>
+
+          <div class="form-group">
+            <label for="correoProducto">Correo </label>
+            <input type="email" class="form-control" id="correoProducto" name="correo" >
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary guardar-cambios">Guardar</button>
+          <button type="button" class=" close btn btn-secondary " data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<form action="/eliminaruser" method="post" id="deleteForm">
+  <input type="hidden" id="ideli" name="idhiddenform">    
+</form>
+
+<div id="registrarmodal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+  <form action="/register" method="post">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header bg-dark text-primary">
+          <h5 class="modal-title" id="editarModalLabel">Registrar Nuevo Usuario</h5>
+          <button type="button" class="close" style="color: #fff;" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <div class="modal-body">
+  
+        <div class="form-group">
+          <label for="nombreProducto">Nombre </label>
+          <input type="text" class="form-control" name="nombre" required >
+        </div>
+        <div class="form-group">
+          <label for="contraseñaProducto">Contraseña </label>
+          <input type="password" class="form-control" name="contraseña"  required>
+        </div>
+       <!-- pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,}$" title="La contraseña debe tener al menos 8 caracteres y contener letras mayúsculas y minúsculas." -->
+
+        <div class="form-group">
+          <label for="correoProducto">Correo</label>
+          <input type="email" class="form-control"  name="correo" required >
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary guardar-cambios">Guardar</button>
+        <button type="button" class=" close btn btn-secondary " data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+</section>
+
+<script src="/static/js/navbar.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.editar-producto').click(function() {
+      var id = $(this).data('id');
+      var nombre = $(this).data('nombre');
+      var contraseña = $(this).data('contraseña');
+      var correo = $(this).data('correo');
+
+
+      // Llenar los campos de la ventana modal con los datos del producto
+      $('#iduser').val(id);
+      $('#nombreProducto').val(nombre);
+      $('#contraseñaProducto').val(contraseña);
+      $('#correoProducto').val(correo);
+
+      // Mostrar la ventana modal
+      $('#editarModal').modal('show');
+    });
+
+    $('.close').click(function() {
+      $('#editarModal').modal('hide');
+
+    });
+
+
+   $('.editar-empleado').click(function() {
+      var id = $(this).data('id');
+      var nombre = $(this).data('nombre');
+      var contraseña = $(this).data('contraseña');
+      var correo = $(this).data('correo');
+
+
+      // Llenar los campos de la ventana modal con los datos del producto
+      $('#iduser1').val(id);
+      $('#nombreempleado').val(nombre);
+      $('#contraseñaProducto').val(contraseña);
+      $('#correoProducto').val(correo);
+
+      // Mostrar la ventana modal
+      $('#editarModalempleado').modal('show');
+    });
+
+    $('.close').click(function() {
+      $('#editarModalempleado').modal('hide');
+
+    });
+
+
+
+    $('.eliminar-empleado').click(function() {
+        var CodigoSP = $(this).data('codigopc');
+        console.log(CodigoSP)
+        Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas eliminar el registro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+        
+      }).then((result) => {
+       
+        if (result.isConfirmed) {
+            $('#ideli').val(CodigoSP);
+            document.getElementById("deleteForm").submit();
+    
+        } else {
+          console.log("Eliminación cancelada");
+        }
+        });
+    
+        });
+    
+  });
+
+  $(document).ready(function() {
+  $('.permisos').click(function() {
+    var userId = $(this).data('id');
+    var user = $(this).data('id');
+    $('#iduser').val(user);
+
+    obtenerPermisos(userId);
+  });
+
+
+
+  $('.registrar').click(function() {
+     
+      // Mostrar la ventana modal
+      $('#registrarmodal').modal('show');
+    });
+
+    $('.close').click(function() {
+      $('#registrarmodal').modal('hide');
+
+    });
+
+        // Recupera el mensaje de error pasado desde Flask
+        var message = "{{ message }}";
+    
+        // Verifica si hay un mensaje de error y muestra la modal correspondiente
+        if (message == '¡Registro exitoso!') {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title:message,
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+
+
+    var deleteuser = "{{ deleteuser }}";
+    
+    // Verifica si hay un mensaje de error y muestra la modal correspondiente
+    if (deleteuser == 'Usuario Inhabilitado!') {
+      console.log(deleteuser)
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title:deleteuser,
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+
+    var registro_errado = "{{ registro_errado }}";
+    
+    // Verifica si hay un mensaje de error y muestra la modal correspondiente
+    if (registro_errado == '¡Registro Fallido!') {
+      console.log(deleteuser)
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title:'¡Registro Fallido!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+});
+
+
+
+function obtenerPermisos(userId) {
+  $.ajax({
+    url: '/permisos',
+    method: 'GET',
+    data: { id: userId },
+    success: function(response) {
+      // Mostrar los permisos en el frontend
+      var permisos = response.permisos;
+
+// Permiso empleados
+var estado1 = permisos[0].estado;
+$('#chekcbosxpermision').prop('checked', estado1);
+
+// Permiso proveedores
+var estado2 = permisos[1].estado;
+$('#chekcbosxpermision1').prop('checked', estado2);
+
+// Permiso ventas
+var estado3 = permisos[2].estado;
+$('#chekcbosxpermision2').prop('checked', estado3);
+
+// Permiso compras
+var estado4 = permisos[3].estado;
+$('#chekcbosxpermision3').prop('checked', estado4);
+
+// Permiso desperfecto
+var estado5 = permisos[4].estado;
+$('#chekcbosxpermision4').prop('checked', estado5);
+
+// Permiso productos
+var estado6 = permisos[5].estado;
+$('#chekcbosxpermision5').prop('checked', estado6);
+
+      $('#modalPermisos').modal('show');
+
+
+      // Mostrar la ventana modal
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+$('.close').click(function() {
+      $('#modalPermisos').modal('hide');
+
+    });
+
+</script>
+ 
+
+{% endblock %}

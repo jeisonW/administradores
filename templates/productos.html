@@ -1,0 +1,256 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+{% block main %}
+<!--css propio-->
+<link rel="stylesheet" href="/static/css/productos.css">
+
+
+<section class="p-4 my-container">
+  
+  <div class="navbar1">
+      <div class="left-content">
+          <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+              <i class="fas fa-bars"></i> Menú
+          </button>
+      </div>
+      <a href="/logout"> 
+              <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </a>  
+      {% if session["user_id"][0][1] == 'admin' %}
+      <a href="/edituser"> Usuarios </a>
+      {% endif %}
+
+    </div>  
+         
+
+  <form action="" method="post"></form>
+
+  <div class="filtro">
+    <div class="row align-items-center">
+      <div class="col-auto">
+
+      </div>
+          <div class="form-group text-center">
+            <input type="text"  name="buscar" id="inputbuscar" class="form-control mx-auto custom-border" placeholder="Buscar..." >
+            <br>
+            <br>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row align-items-center">
+    <div class="form-group text-center">
+      <a href="/addproduct"><button type="button" class="btn btn-primary " >
+        Registrar nuevo Producto
+      </button></a>
+    </div>
+  </div>
+  
+ 
+  <div class="tarjetas-container">
+  {% if prueba %}
+  {% for row in prueba %}
+  <div class="card tarjeta" id="product-{{ row.id }}" style="width: 18rem;">
+    {% if row.imagen == 'https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg' %}
+      <img src="{{row.imagen}}" alt="Imagen del último producto" style="height:50%" class="product-image">
+    {% else %}
+      <img src="{{row.imagen}}" alt="Imagen del último producto" class="product-image">
+    {% endif %}
+    <div class="card-body bd">
+      <h5 class="card-title nombre">{{ row.nombre }}</h5>
+      <p class="card-text codigo-color"><span><strong>Codigo:</strong> {{ row.id }}</span><span class="product-price"><strong>Precio:</strong> C${{row.precio}}</span></p>
+      <div class="card-text stock">
+        <p class="card-text"><strong>Stock:</strong> {{row.stock}} unidades</p>
+        <a href="#" class="btn btn-primary btn-sm editar-producto" data-id="{{ row.id }}" data-nombre="{{ row.nombre }}" data-precio="{{ row.precio }}" data-imagen="{{ row.imagen }}"><i class="fas fa-pencil"></i></a>
+      </div>
+      <div class="card-footer">
+        <button onclick="mostrarDetalles('{{ row.id }}')" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#detallesModal">Ver Detalles</button> 
+      </div>
+    </div>
+</div>
+
+  {%endfor%}
+{% endif %}
+  </div>
+
+
+  <!-- Modal detalles -->
+<div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles de Abastecimiento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr class="table-info">
+              <th scope="col">Talla</th>
+              <th scope="col">ColorProducto</th>
+              <th scope="col">Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+
+        <div id="detallesContenido"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<!-- Ventana modal -->
+<form id="editarModalForm" enctype="multipart/form-data">
+  <div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+                  <button type="button" class="close ocultar" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="card mb-3">
+                      <div class="row g-0">
+                          <div class="col-md-4">
+                              <img id="imagenProductos" src="" class="img-fluid" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                              <div class="card-body">
+                                  <label for="imageninput">Imagen
+                                      <input type="file" id="imageninput" class="form-control-file" name="imagen" accept="image/*" />
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <input type="hidden" id="idProducto" name="idProducto">
+                  <div class="form-group">
+                      <label for="nombreProducto">Nombre</label>
+                      <input type="text" class="form-control" id="nombreProducto" name="nombre" required>
+                  </div>
+                  <div class="form-group" id="precioContainer">
+                      <label for="precioProducto">Precio </label>
+                      <input type="number" class="form-control" id="precioProducto" name="precio" required min="1">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary guardar-cambios">Guardar</button>
+                  <button type="button" class="btn btn-secondary ocultar" data-dismiss="modal">Cancelar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</form>
+
+  <div class="container">      
+    <div class="row align-content-center" >
+      <div class="paginatio ">
+        {{ pagination.links }}
+      </div>
+    </div>
+  </div>
+    
+
+</section>
+  
+
+<script src="/static/js/navbar.js"></script>
+
+<!--js bootstraps-->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!--js propio-->
+<script src="/static/js/datoproducto.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Manejar el evento de clic en el botón de editar producto
+    $('.tarjeta').on('click', '.editar-producto', function() {
+        let productId = $(this).data('id');
+
+        // Realizar una solicitud AJAX para obtener los datos del producto
+        $.ajax({
+            url: `/getproduct/${productId}`,
+            method: 'GET',
+            success: function(data) {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    // Rellenar el formulario del modal con los datos del producto
+                    $('#idProducto').val(data.id);
+                    $('#nombreProducto').val(data.nombre);
+                    $('#precioProducto').val(data.precio);
+
+                    if (data.imagen) {
+                        $('#imagenProductos').attr('src', 'data:image/jpeg;base64,' + data.imagen);
+                    } else {
+                        $('#imagenProductos').attr('src', 'https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg'); // URL por defecto si no hay imagen
+                    }
+
+                    // Mostrar el modal
+                    $('#editarModal').modal('show');
+                }
+            },
+            error: function() {
+                alert('Error al obtener los datos del producto');
+            }
+        });
+    });
+
+    // Manejar el envío del formulario
+    $('#editarModalForm').on('submit', function(e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+        fetch(`/editproduct`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+              Swal.fire({
+              icon: "error",
+              text: "El nombre del producto ya está registrado!",
+              });
+            } else {
+                
+                
+
+                $('#editarModal').modal('hide');
+
+                // Actualizar los campos del producto en la lista
+                let productId = formData.get('idProducto');
+                let productCard = $(`#product-${productId}`);
+                productCard.find('.nombre').text(formData.get('nombre'));
+                productCard.find('.codigo-color .product-price').text(`Precio: C$${formData.get('precio')}`);
+
+                if (formData.get('imagen').size > 0) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        productCard.find('.product-image').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(formData.get('imagen'));
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
+  </script>
+  
+
+{% endblock %}

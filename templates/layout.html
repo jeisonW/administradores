@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="icon" type="image/png" href="static/img/kdletraB.png">
+    <!--Link iconos de font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- link bootstraps-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">   <!--<link rel="stylesheet" href="/static/css/style.css">-->
+    <!--Fuente de google-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;400&display=swap" rel="stylesheet">
+
+    <!--sweet alert-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+  
+    <link rel="stylesheet" href="static/css/mdb/mdb/mdb.min.css">
+
+    <!--css propio-->
+    <link rel="stylesheet" href="static/css/menuLateral.css">
+    <link rel="stylesheet" href="static/css/button.css">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="static/css/prueba.css"> 
+
+ 
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-expand d-flex flex-column align-items-start" id="sidebar">
+            <a href="/" class="navbar-brand text-light position-fixed aimg">
+                <div class="display-5 font-weight-bold ">
+                    <img src="static/img/kdLg.png" alt="img" class="img-fluid custom-shadow fixed-image">
+                </div>
+            </a>
+            <ul class="navbar-nav d-flex flex-column w-100 " style="margin-top: 32vh;">
+                <li class="nav-item w-100 liPrin">
+                    <a href="/" class="nav-link text-white">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span class="ms-2">Graficos</span>
+                    </a>
+                </li>
+                {% if session["permisoproducto"] %}
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuP" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="fas fa-box-open"></i>
+                        <span class="ms-2">Productos</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuP" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/productos" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/addproduct" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+
+                <li class="nav-item w-100 liPrin">
+                    <a href="/productos" class="nav-link text-white">
+                        <i class="fas fa-box-open"></i>
+                        <span class="ms-2">Productos</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% if session["permisoempleado"] %}
+                <li class="nav-item w-100 liPrin">
+                    <a href="/empleado" class="nav-link text-white">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="ms-2">Empleados</span>
+                    </a>
+                </li>
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuE" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="ms-2">Empleados</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuE" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/empleado" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/addempleado" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+                {% endif %}
+
+                {% if session["permisoproveedores"] %}
+                <li class="nav-item w-100 liPrin">
+                    <a href="/proveedores" class="nav-link text-white">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="ms-2">Proveedores</span>
+                    </a>
+                </li>
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuPr" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="ms-2">Proveedores</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuPr" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/proveedores" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/agregarproveedor" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+                {% endif %}
+
+
+                {% if session["permisocompra"]  %}
+                <li class="nav-item w-100 liPrin">
+                    <a href="/mostraaba" class="nav-link text-white">
+                        <i class="fas fa-truck"></i>
+                        <span class="ms-2">Abastecimientos</span>
+                    </a>
+                </li>
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuAbas" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="fas fa-truck"></i>
+                        <span class="ms-2">Abastecimientos</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuAbas" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/mostraaba" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/agregarproductos" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+                {% endif %}
+
+                {% if session["permisoventa"] %}
+
+                <li class="nav-item w-100 liPrin">
+                    <a href="/verventa" class="nav-link text-white">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="ms-2">Ventas</span>
+                    </a>
+                </li>
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuVent" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="ms-2">Ventas</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuVent" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/verventa" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/addventa" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+                {% endif %}
+
+                {% if session["permisodesperfecto"]  %}
+                <li class="nav-item w-100 liPrin">
+                    <a href="/verdesperfecto" class="nav-link text-white">
+                        <i class="bi bi-patch-exclamation-fill"></i>
+                        <span class="ms-2">Desperfectos</span>
+                    </a>
+                </li>
+                <!--
+                <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+                    <a href="#sidemenuDes" data-bs-toggle="collapse" class="nav-link text-white">
+                        <i class="bi bi-patch-exclamation-fill"></i>
+                        <span class="ms-2">Desperfectos</span>
+                        <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+                    </a>
+                    <ul class="nav collapse flex-column collapse-hidden" id="sidemenuDes" data-bs-parent="#sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/verdesperfecto" aria-current="page">Ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/adddesperfecto" aria-current="page">Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                -->
+                {% endif %}
+
+                <li class="nav-item w-100 liPrin">
+                    <a href="/usermanual" class="nav-link text-white">
+                        <i class="fas fa-book-open"></i>
+                        <span class="ms-2">Manual de usuario</span>
+                    </a>
+                </li>
+
+                <li class="nav-item w-100 liPrin">
+                    <span class="nav-link text-white" style="font-size: 15px; color: white; margin-top:10px;">{{ session["user_id"][0][1] }}</span>
+                </li>
+
+                  
+            </ul>
+        
+    </nav>
+    
+      
+    {% block main %}{% endblock %}
+    
+
+    <script src="https://kit.fontawesome.com/72d2ae7f6d.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!--js bootstraps-->
+<!--No borrar scrip para que funcione el dropdown-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

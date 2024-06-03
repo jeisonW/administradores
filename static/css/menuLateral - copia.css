@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f6f6f6;
+}
+
+.navbar {
+    width: 270px;
+    height: 100vh;
+    position: fixed;
+    margin-left: 0;
+    background-color:  #f3146b;
+    transition: 0.4s;
+    overflow-y: auto;
+
+}
+
+.navbar.active-nav {
+    margin-left: -300px;
+}
+
+
+/*colorea si se le dio click*/
+.nav-link.active {
+    background-color: #f193a9;
+}
+
+.nav-link {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 16px;
+}
+
+.nav-link:active,
+.nav-link:focus,
+.nav-link:hover {
+    background-color: #fc689c;
+}
+
+
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: #fc689c;
+}
+
+.my-container {
+    transition: 0.4s;
+    margin-left: 250px;
+}
+
+.my-container.active-nav {
+    margin-left: 0;
+}
+
+
+
+/*color del a para que el texto se oculte detras del color*/
+.aimg{
+    background-color: #f3146b;
+    transition: background-color 0.3s ease;
+    width: 230px;
+   
+}
+.aimg img{
+    width: 200px;
+    height: 200px;
+}
+  
+/* para el desplazamiento de los dropdown */
+.nav-item ul {
+    display: block;
+  }
+
+  
+/* seccion centro */
+
+.active-cont {
+    margin-left: 250px;
+}
+
+
+/*Sombras del logo kd*/
+.custom-shadow {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))
+  }
+  
+.custom-border {
+    border: 1px solid #b02960; 
+    border-radius: 5px; /* Opcional: agrega bordes redondeados */
+    width: 90%;
+}

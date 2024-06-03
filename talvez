@@ -1,0 +1,209 @@
+<a href="/" class="navbar-brand text-light position-fixed aimg">
+    <div class="display-5 font-weight-bold ">
+        <img src="static/img/kdLg.png" alt="img" class="img-fluid custom-shadow fixed-image">
+    </div>
+</a>
+<ul class="navbar-nav d-flex flex-column w-100 " style="margin-top: 32vh;">
+    <li class="nav-item w-100 liPrin">
+        <a href="/" class="nav-link text-white">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span class="ms-2">Graficos</span>
+        </a>
+    </li>
+    {% if session["permisoproducto"] %}
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuP" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="fas fa-box-open"></i>
+            <span class="ms-2">Productos</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuP" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/productos" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/addproduct" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+    
+    {% if session["permisoempleado"] %}
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuE" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="bi bi-people-fill"></i>
+            <span class="ms-2">Empleados</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuE" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/empleado" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/addempleado" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+    {% if session["permisoproveedores"] %}
+
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuPr" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="bi bi-people-fill"></i>
+            <span class="ms-2">Proveedores</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuPr" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/proveedores" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/agregarproveedor" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+
+    {% if session["permisocompra"]  %}
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuAbas" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="fas fa-truck"></i>
+            <span class="ms-2">Abastecimientos</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuAbas" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/mostraaba" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/agregarproductos" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+    {% if session["permisoventa"] %}
+
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuVent" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span class="ms-2">Ventas</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuVent" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/verventa" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/addventa" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+    {% if session["permisodesperfecto"]  %}
+
+    <li class="nav-item my-1 w-100 disabled liPrin" onclick="rotar(this)">
+        <a href="#sidemenuDes" data-bs-toggle="collapse" class="nav-link text-white">
+            <i class="bi bi-patch-exclamation-fill"></i>
+            <span class="ms-2">Desperfectos</span>
+            <i class="fas fa-caret-right icono" style="font-size: 14px;"></i>
+        </a>
+        <ul class="nav collapse flex-column collapse-hidden" id="sidemenuDes" data-bs-parent="#sidebar">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/verdesperfecto" aria-current="page">Ver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/adddesperfecto" aria-current="page">Agregar</a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+
+    <li class="nav-item w-100 liPrin">
+        <span class="badge" style="font-size: 18px; color: white; margin-top:10px;">{{ session["user_id"][0][1] }}</span>
+    </li>
+      
+
+    <li class="nav-item w-100 liPrin">
+        <a href="/logout"> 
+            <button type="submit" class="btn my-4" id="cerrar-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+            </button> 
+        </a>  
+    </li>      
+</ul>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var comboplete = new Awesomplete('input.dropdown-input', {
+	minChars: 0,
+});
+Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
+	if (comboplete.ul.childNodes.length === 0) {
+		comboplete.minChars = 0;
+		comboplete.evaluate();
+	}
+	else if (comboplete.ul.hasAttribute('hidden')) {
+		comboplete.open();
+	}
+	else {
+		comboplete.close();
+	}
+});
+        const idProductInput = document.getElementById('id_product');
+        const awesompleteList = document.getElementById('awesomplete_list_1');
+        const awesomplete = new Awesomplete(idProductInput, { list: awesompleteList });
+
+        idProductInput.addEventListener('input', function() {
+            const codigoProducto = idProductInput.value.trim().toUpperCase();
+
+            // Limpiar la lista de sugerencias
+            awesompleteList.innerHTML = '';
+
+            // Realizar la búsqueda de sugerencias en el servidor
+            fetch('/buscar_producto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ codigo_producto: codigoProducto })
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(producto => {
+                  
+                    const label = `${producto.nombre} - ${producto.detalle1} - ${producto.detalle2}`;
+                    awesompleteList.appendChild(new Option(label, producto.codigo));
+                });
+                awesomplete.evaluate();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const queryInput = document.querySelector("#id_product");
+      
+      const awesomplete = new Awesomplete(queryInput, {
+        filter: () => { // We will provide a list that is already filtered ...
+            return true;
+          },
+          sort: false,    // ... and sorted.
+          list: []
+        });
+      
+        
+        queryInput.addEventListener("input", (event) => {
+          const inputText = event.target.value;
+          // Process inputText as you want, e.g. make an API request.
+          awesomplete.list = ["my", "custom", "list"];
+          awesomplete.evaluate();
+        });
+      });

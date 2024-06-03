@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manual de usuario
+{% endblock %}
+
+{% block main %}
+<link rel="stylesheet" href="static/css/button.css">
+<link rel="stylesheet" href="static/css/manualuser.css">
+
+<!--Fuentes google-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Russo+One&display=swap" rel="stylesheet">
+
+<section class="p-4 my-container">
+    <div class="navbar1">
+        <div class="left-content">
+            <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+        </div>
+        <a href="/logout"> 
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>  
+        {% if session["user_id"][0][1] == 'admin' %}
+
+        <a href="/edituser"> Usuarios </a>
+        {% endif %}
+    </div>  
+    <h1 class="tituloManual">Sistema de información web de ventas e inventarios</h1>
+    <p class="descripManual">
+        Este proyecto tiene como finalidad optimizar los procesos de compra y venta de tienda KD para ello cuenta con los siguientes apartados:
+    </p>
+    <ul class="navbar-nav d-flex flex-column w-100 menuManualList">
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=graficosMan" class="nav-link1 text-black">
+                <i class="far fa-square"></i>
+                <span class="ms-2">Graficos</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=productosMan" class="nav-link1 text-black">
+                <i class="far fa-square"></i>
+                <span class="ms-2">Productos</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=empleadoMan" class="nav-link1 text-black">
+               <i class="far fa-square"></i>
+                <span class="ms-2">Empleados</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=proveedorMan" class="nav-link1 text-black">
+               <i class="far fa-square"></i>
+                <span class="ms-2">Proveedores</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=abasteceMan" class="nav-link1 text-black">
+                <i class="far fa-square"></i>
+                <span class="ms-2">Abastecimientos</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=ventasMan" class="nav-link1 text-black">
+                <i class="far fa-square"></i>
+                <span class="ms-2">Ventas</span>
+            </a>
+        </li>
+        <li class="nav-item w-50 mb-4">
+            <a href="/descripcionesManual?data-section=desperfectosMan" class="nav-link1 text-black">
+                <i class="far fa-square"></i>
+                <span class="ms-2">Desperfectos</span>
+            </a>
+        </li>
+    </ul>
+
+</section>
+<!--js bootstraps-->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('ul.menuManualList li').each(function () {
+            // Captura el enlace y el icono dentro de cada elemento de la lista
+            var enlace = $(this).find('a');
+            var icono = $(this).find('i');
+
+            // Agrega eventos de mouseover y mouseout al enlace
+            enlace.mouseover(function () {
+                icono.removeClass('far').addClass('fas');
+            });
+
+            enlace.mouseout(function () {
+                icono.removeClass('fas').addClass('far');
+            });
+        });
+    });
+</script>
+
+<script src="/static/js/navbar.js"></script>
+
+{% endblock %}

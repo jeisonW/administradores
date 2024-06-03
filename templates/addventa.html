@@ -1,0 +1,298 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Registrar Venta
+{% endblock %}
+
+{% block main %}
+<section class="p-4 my-container">    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bulma.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+        <link rel="stylesheet" href="/static/css/productosnuevos.css"> 
+
+
+       
+        <div class="navbar1">
+            <div class="left-content">
+                <button  type="submit" class="btn prueba btn-primary mb-4" id="menu-btn">
+                    <i class="fas fa-bars"></i> Menú
+                </button>
+            </div>
+            <a href="/logout"> 
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+            </a>  
+            {% if session["user_id"][0][1] == 'admin' %}
+      
+            <a href="/edituser"> Usuarios </a>
+            {% endif %}
+      
+          </div>       
+             
+          <div class="row align-items-center">
+            <div class="form-group text-center">
+              <a href="/verventa"><button type="button" class="btn btn-primary " >
+                Ver Ventas
+              </button></a>
+            </div>
+          </div>
+        <div class="form-container" style="color: black; "> 
+            <form id="formularioCompra"  method="POST">
+                <h2 class="form-title" style="width: 120vh;">Registro de Ventas </h2>
+
+
+                <div class="row">
+                        <div class="col-6">
+                            <label  class="form-label" for="fecha">Fecha:
+                            <input type="date" class="form-control" id="fecha" name="fecha" onblur="fecha2()" required>
+                            <p id="message_fecha" style="color: red;"> </p>
+
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label  class="form-label"   for="trabajador">Trabajador:
+                            <select  id="trabajador" name="trabajador" class="form-control" required>
+                                <option value="" selected disabled>Selecciona un trabajador</option>
+                                {% for row in empleado%}
+                                <option value="{{row.IDempleado}}">{{row.NombreEmpleado}}</option>
+                                {% endfor %}
+                            </select>
+                            </label>
+                        </div>  
+                    </div>  
+
+  
+                    <table id="tablaCompra"  class="table table-striped table-bordered"  >
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Talla</th>
+                                <th>Color </th>
+                                <th>Precio </th>
+                                <th>Disponibilidad</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {% for row in productos %}
+                            <tr data-codigo="{{row.codigo}}" data-nombre="{{row.NombreProducto}}" data-color="{{row.ColorProducto}}" data-talla="{{row.Talla}}" data-disponibilidad="{{row.stock}}" data-precio="{{row.PrecioProducto}}">
+                                <td>{{row.codigo}}</td>
+                                <td>{{row.NombreProducto}}</td>
+                                <td>{{row.Talla}}</td>
+                                <td>{{row.ColorProducto}}</td>
+                                <td>C$ {{row.PrecioProducto}}</td>
+                                <td>{{row.stock}}</td>
+                                <td>
+                                    <input type="number" name="cantidad" class="cantidad-input" placeholder="Cantidad" />
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                <button type="submit" class="btn btn-lg btn-info"> Enviar Venta</button>
+            </form>
+        </div>
+
+</section>
+
+
+
+
+ <!--js propio-->
+ <script src="/static/js/navbar.js"></script>
+ <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+ <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bulma.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.templates.min.js"></script>
+
+
+    <script>
+  function fecha2(){
+  var fecha_producto = document.getElementById("fecha").value;
+
+  if (fecha_producto )
+  {
+
+  var partes = fecha_producto.split('-');
+
+  if (partes.length === 3) {
+    var anio = parseInt(partes[0], 10);
+    var mes = parseInt(partes[1], 10) - 1; // Restamos 1 porque los meses comienzan en 0
+    var dia = parseInt(partes[2], 10);
+
+    var fechaActual = new Date();
+    var fechaSeleccionadaObj = new Date(anio, mes, dia);
+
+    if (fechaSeleccionadaObj > fechaActual) {
+      document.getElementById('fecha').style.borderColor = "red";
+      document.getElementById('message_fecha').textContent = 'fecha invalida';
+      setTimeout(color2 , 2000)
+     
+    }
+    else
+    {
+      document.getElementById('fecha').style.borderColor = "";
+      document.getElementById('message_fecha').textContent = '';
+
+    }
+
+    
+  }
+  else 
+  {
+    alert('Formato de fecha no válido.');
+  }
+
+}
+
+}
+
+function color2(){
+  document.getElementById('fecha').style.borderColor = "";
+  document.getElementById('message_fecha').textContent = '';
+  document.getElementById('fecha').value = '';
+}
+
+    
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const formularioCompra = document.getElementById("formularioCompra");
+            const tablaCompra = $('#tablaCompra').DataTable({
+                responsive: true, // Hace que DataTables sea responsive
+                bDeferRender: true,
+                autoWidth: false,
+                columns: [
+                    { data: "codigo" },
+                    { data: "nombre" },
+                    { data: "color" },
+                    { data: "talla" },
+                    { data: "disponibilidad" },
+                    { data: "precio" },
+                    { data: "cantidad" },
+                ]
+            });
+            const fechaInput = document.getElementById("fecha");
+            const trabajadorInput = document.getElementById("trabajador");
+    
+             // Verifica automáticamente al cargar la página
+             verificarMostrarTabla();
+    
+            // Verifica cuando cambia el valor de fecha o trabajador
+            fechaInput.addEventListener("input", verificarMostrarTabla);
+            trabajadorInput.addEventListener("input", verificarMostrarTabla);
+    
+            formularioCompra.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const datosVenta = [];
+    
+                this.querySelectorAll("tbody tr").forEach((fila) => {
+                    const cantidadInput = fila.querySelector(".cantidad-input");
+                    const cantidad = parseInt(cantidadInput.value);
+                    const codigo = fila.dataset.codigo;
+                    const nombre = fila.dataset.nombre;
+                    const color = fila.dataset.color;
+                    const talla = fila.dataset.talla;
+                    const precio = parseInt(fila.dataset.precio);
+                    const disponibilidad = parseInt(fila.dataset.disponibilidad);
+                    const fecha = document.getElementById('fecha').value;
+                    const empleado = document.getElementById('trabajador').value;
+
+                    if (!isNaN(cantidad) && cantidad > 0 && cantidad <= disponibilidad) {
+                        datosVenta.push({
+                            fecha:fecha,
+                            empleado:empleado,
+                            codigo: codigo,
+                            nombre: nombre,
+                            color: color,
+                            talla: talla,
+                            cantidad: cantidad,
+                            precio: precio,
+
+                        });
+                    }
+                });
+    
+    
+                if (datosVenta.length > 0) {
+                    fetch('/añadir_venta', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(datosVenta),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+
+                            console.log('Respuesta del servidor:', data);
+                            Swal.fire({
+                            text: "Transacion registrada",
+                            icon: "success"
+                            });
+                            location.href = '/addventa';
+                                        })
+                        .catch(error => {
+                            console.error('Error al enviar datos al servidor:', error);
+                            alert("Error al realizar la venta");
+                        });
+                } else {
+                    alert("Por favor, ingrese una cantidad válida para al menos un producto con disponibilidad.");
+                }
+            });
+    
+            function verificarMostrarTabla() {
+                const fecha = fechaInput.value;
+                const trabajador = trabajadorInput.value;
+    
+                if (fecha && trabajador) {
+                tablaCompra.columns.adjust().draw(); // Ajusta las columnas y vuelve a dibujar la tabla
+                $('#tablaCompra_wrapper').show(); // Muestra el contenedor del DataTables
+                } else {
+                    $('#tablaCompra_wrapper').hide(); // Oculta el contenedor del DataTables
+                }
+            }
+    
+            // Añade el siguiente código para limitar la cantidad al cargar la página y en tiempo real
+            document.querySelectorAll(".cantidad-input").forEach(function (input) {
+                const fila = input.closest("tr");
+                const disponibilidad = parseInt(fila.dataset.disponibilidad);
+    
+                // Limita la cantidad al valor de disponibilidad al cargar la página
+                limitarCantidad(input, disponibilidad);
+    
+                // Actualiza la cantidad al cambiar el valor del input
+                input.addEventListener("input", function () {
+                    limitarCantidad(this, disponibilidad);
+                });
+            });
+    
+            function limitarCantidad(input, disponibilidad) {
+                const cantidad = parseInt(input.value);
+                if (isNaN(cantidad) || cantidad < 0) {
+                    input.value = 0;
+                } else if (cantidad > disponibilidad) {
+                    input.value = disponibilidad;
+                }
+            }
+        });
+    </script>
+    
+{% endblock %}
