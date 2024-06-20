@@ -803,14 +803,42 @@ def verificarDataProduct():
     idProducto = request.form.get("id_product")
     nombre = request.form.get("nombreProduct")
     # Verificar si el código ya existe y si el nombre coincide
-    cursor.execute("SELECT COUNT(*) FROM Producto WHERE CodigoProducto = ? AND NombreProducto = ?", (idProducto, nombre))
+     # Verificar si el nombre del producto ya existe
+    cursor.execute('SELECT COUNT(*) FROM Producto WHERE NombreProducto = ?', (nombre,))
     resultado = cursor.fetchone()[0]
 
-    if resultado > 0:
-        return jsonify({"success": "El producto ya existe y el nombre coincide."})
-
+    if resultado == 0:
+        # El nombre del producto no existe
+        cursor.execute('SELECT COUNT(*) FROM Producto WHERE CodigoProducto = ?', (idProducto,))
+        resultado = cursor.fetchone()[0]
+        if resultado == 0:
+            # El nombre y el código del producto no existen
+            return jsonify({"success": "El producto no existe, puede ser añadido."})
+        else:
+            # El nombre no existe pero el código sí
+            return jsonify({"success": "El producto ya existe con otro nombre."})
     else:
-        return jsonify({"error": "Producto actualizado correctamente"})
+        # El nombre del producto existe
+        cursor.execute('SELECT COUNT(*) FROM Producto WHERE NombreProducto = ? AND CodigoProducto = ?', (nombre, idProducto))
+        resultado = cursor.fetchone()[0]
+        if resultado == 0:
+            # El nombre existe pero el código no coincide
+            cursor.execute('SELECT COUNT(*) FROM Producto WHERE CodigoProducto = ?', (idProducto,))
+            resultado = cursor.fetchone()[0]
+            if resultado == 0:
+                # El nombre existe pero el código no
+                return jsonify({"success": "El nombre del producto existe, pero el código no. Puede ser añadido."})
+            else:
+                # El código existe con otro nombre
+                return jsonify({"error": "El código del producto ya existe con otro nombre."})
+        else:
+            # El nombre y el código coinciden
+            return jsonify({"success": "El producto ya existe y el nombre coincide."})
+
+
+    
+
+
 
  
 
