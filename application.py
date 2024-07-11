@@ -1032,18 +1032,19 @@ def recibir_datos_compra():
     datos = []
     fecha = datos_compra[0]['fecha']
     empleado = datos_compra[0]['empleado']
-    print(empleado)
-    print(fecha)
+    print("prueba " , datos_compra)
+
     for row in datos_compra:
         sql = ' update ColoryTalla set Stock = (Stock - ?) where CodigoProducto = ? and ColorProducto = ? and Talla = ?'
         values = (int(row['cantidad']) , row['codigo'] , row['color'], row['talla'])
         cursor.execute(sql , values)
-        cursor.commit()
-
+        #cursor.commit()
+        print("primer commit ")
         sql = "update Producto set Stock = (Stock - ?) where CodigoProducto = ?"
         values = (int(row['cantidad'])  , row['codigo'])
         cursor.execute(sql , values)
-        cursor.commit()
+        #cursor.commit()
+        print("segundo commit ")
 
         sql = "select * from Ventas where IDempleado = ? and Fechaventa = ?"
         values = (empleado , fecha )
@@ -1051,23 +1052,26 @@ def recibir_datos_compra():
         resultados = cursor.fetchone() 
 
         if resultados is None:
-            print('y entonces')
             sql = "insert into Ventas (IDempleado , FechaVenta , TotalVenta) values (?, ?,?)"
             values = ( empleado , fecha , (int(row['precio']) *  int(row['cantidad'])) )
             cursor.execute(sql , values)
-            cursor.commit()
+            #cursor.commit()
+            print("tercer commit ")
+
         else:
             sql = "update Ventas set TotalVenta = (TotalVenta + ?) WHERE IDempleado = ?  and FechaVenta = ?"
             values = ((int(row['precio']) *  int(row['cantidad'])), empleado , fecha)
             cursor.execute(sql , values)
-            cursor.commit()
+            #cursor.commit()\
+            print("cuarto commit ")
+        
   
         sql = "select VentaID from Ventas where IDempleado = ? and Fechaventa = ?"
         values = ( empleado , fecha )
         cursor.execute(sql , values)
         resultados = cursor.fetchone()
         ventaid =resultados[0] 
-        print(ventaid)
+        
 
         sql = "select * from DetalleVenta where CodigoProducto = ? and VentaID = ?"
         values  = (row['codigo'] , ventaid)
@@ -1078,14 +1082,16 @@ def recibir_datos_compra():
             sql = 'insert into DetalleVenta (VentaID ,CodigoProducto , CantidadVendida , PrecioUnitario) VALUES (?,?,?,?)'
             values = (ventaid  ,row['codigo']  , int(row['cantidad']) , int(row['precio']))
             cursor.execute(sql , values)
-            cursor.commit()
+            #cursor.commit()
+            print("quinto commit ")
         else :
             sql = "UPDATE DetalleVenta SET CantidadVendida = (CantidadVendida + ?) WHERE  CodigoProducto = ? AND VentaID = ?"
             values = (int(row['cantidad']) ,row['codigo']  , ventaid )
             cursor.execute(sql , values)
-            cursor.commit()
+            #cursor.commit()
+            print("sexto commit ")
                 
-        return jsonify({"mensaje": "Datos de compra recibidos con éxito"})
+    return jsonify({"mensaje": "Datos de compra recibidos con éxito"})
 
 
 @app.route("/addventa" , methods=["GET"])
@@ -1167,7 +1173,22 @@ def mostraaba():
         next
     else:
         
-        sql ="SELECT SUM(de.CantidadSuministrada) AS CantidadSuministrada, aba.AbastecimientoID AS id_abas, MAX(aba.FechaAbastecimiento) AS FechaAbastecimiento, MAX(aba.TotalCompra) AS Total_Gasto, MAX(p.NombreProducto) AS NombreProducto, MAX(pro.Nombreproveedor) AS Nombreproveedor FROM Producto AS p JOIN DetalleAbastecimiento AS de ON p.CodigoProducto = de.CodigoProducto JOIN Abastecimientos AS aba ON de.AbastecimientoID = aba.AbastecimientoID JOIN Proveedor AS pro ON aba.IDproveedor = pro.IDproveedor GROUP BY aba.AbastecimientoID;"
+        sql ='''SELECT 
+        SUM(de.CantidadSuministrada) AS CantidadSuministrada, 
+        aba.AbastecimientoID AS id_abas, 
+        MAX(aba.FechaAbastecimiento) AS FechaAbastecimiento, 
+        MAX(aba.TotalCompra) AS Total_Gasto, 
+        MAX(p.NombreProducto) AS NombreProducto, 
+        MAX(pro.Nombreproveedor) AS Nombreproveedor 
+        FROM 
+            Producto AS p 
+            JOIN DetalleAbastecimiento AS de ON p.CodigoProducto = de.CodigoProducto 
+            JOIN Abastecimientos AS aba ON de.AbastecimientoID = aba.AbastecimientoID 
+            JOIN Proveedor AS pro ON aba.IDproveedor = pro.IDproveedor 
+        GROUP BY 
+            aba.AbastecimientoID 
+        ORDER BY 
+            FechaAbastecimiento DESC'''
        
         resultado = cursor.execute(sql)
         resultado = cursor.fetchall()
@@ -1197,7 +1218,7 @@ def ver_detalles(abastecimiento_id):
 @app.route('/ver_detalles_compras/<int:ventaid>')
 def ver_detalles_compras(ventaid):
     print(ventaid)
-    cursor.execute("SELECT * FROM Detalleventa WHERE DetalleVentaID = ?", (ventaid,))
+    cursor.execute("SELECT * FROM Detalleventa WHERE VentaID = ?", (ventaid,))
     detalles = cursor.fetchall()
     print(detalles)
     desgloce = []
